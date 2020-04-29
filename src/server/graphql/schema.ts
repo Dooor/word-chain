@@ -1,8 +1,6 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
-  # Your schema will go here
-
   type Room {
 	  id: ID!
 	  status: String!
@@ -16,13 +14,11 @@ export const typeDefs = gql`
 	  name: String!
   }
 
-  type Game {
-	  id: ID!
-	  room: Room
-	  players: [User]!
+  type Query {
+	  room(id: ID!): Room
   }
 
-  type Query {
-	  game(id: ID!): Game
+  type Mutation {
+	  createRoom: Room
   }
 `;

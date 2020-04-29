@@ -44,14 +44,19 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "apollo-datasource-rest": "^0.8.1",
     "apollo-server": "^2.12.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "find-free-port": "^2.0.0",
     "graphql": "^15.0.0",
+    "module-alias": "^2.2.2",
     "mongodb": "^3.5.6",
     "morgan": "^1.10.0",
     "pm2": "^4.4.0",
     "uuid": "^7.0.3"
+  },
+  "_moduleAliases": {
+    "@server": "src/server"
   }
 }
