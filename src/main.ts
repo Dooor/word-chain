@@ -1,1 +1,3 @@
-console.log('main');
+import { Server } from './Server';
+
+new Server().start();
