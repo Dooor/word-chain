@@ -19,8 +19,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
-    "paths": { "find-free-port": ["types/find-free-port"] },
-    "outDir": "dist/"
+    "paths": {
+      "find-free-port": ["types/find-free-port"],
+      "@server/*": ["server/*"]
+    },
+    "outDir": "dist/",
+    "noImplicitAny": false,
   },
   "include": [
     "./src/**/*.ts",
