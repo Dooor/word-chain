@@ -1,0 +1,34 @@
+{
+    "root": true,
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
+      "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "no-public" }],
+      "@typescript-eslint/no-namespace": "off",
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "semi": "error",
+      "space-infix-ops": "error",
+      "no-inner-declarations": "off"
+    },
+    "overrides": [
+      {
+        "files": ["*.js"],
+        "rules": {
+          "@typescript-eslint/no-var-requires": "off",
+          "@typescript-eslint/tslint/config": "off"
+        }
+      }
+    ]
+}
