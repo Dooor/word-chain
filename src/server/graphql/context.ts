@@ -1,3 +1,5 @@
+import express from 'express';
+
 // Config
 import { Dependencies } from '@server/config/Config';
 import { DI } from '@server/config/DIUtils';
@@ -16,11 +18,22 @@ export interface Context {
 	session: SessionData;
 }
 
-export default async (): Promise<Context> => {
+export default async ({ req }: { req: express.Request }): Promise<Context> => {
 	const authService = await DI.resolve(Dependencies.AuthService);
 	const userRepository = await DI.resolve(Dependencies.UserRepository);
 
-	const token = Token.create({ value: 'xxxxxxxxxx' }); // FIXME
+	const authorization = req.get('Authorization') || '';
+    if (!authorization.startsWith('Bearer ')) {
+		return {
+			session: {
+				token: null,
+				authenticatorId: null,
+				user: null,
+			},
+		};
+    }
+
+	const token = Token.create({ value: authorization.replace('Bearer ', '') }); // FIXME
 
 	const authenticatorId = await authService.authenticate(token);
 	const user = authenticatorId ? await userRepository.getUserByAuthenticatorId(authenticatorId) : null;
