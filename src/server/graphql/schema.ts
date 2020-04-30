@@ -18,5 +18,6 @@ export const typeDefs = gql`
 
   type Mutation {
 	  createRoom: Room
+	  createUser: User
   }
 `;

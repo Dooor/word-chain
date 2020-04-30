@@ -15,6 +15,8 @@ import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
 
 // Graphql
 import { Room as RoomResponse } from '@server/graphql/types';
+import { Context } from '@server/graphql/context';
+
 
 export interface RoomAPI {
 	getRoom: (id?: string, invitationCode?: string) => Promise<RoomResponse | null>;
@@ -22,9 +24,9 @@ export interface RoomAPI {
 }
 
 export class RoomAPIImpl extends DataSource implements RoomAPI {
-	private context = {};
+	private context: Context = { session: { token: null, authenticatorId: null, user: null } };
 
-	initialize = (config: DataSourceConfig<{}>): void => {
+	initialize = (config: DataSourceConfig<Context>): void => {
 		this.context = config.context;
 	}
 
