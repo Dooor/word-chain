@@ -3,7 +3,6 @@ import { gql } from 'apollo-server';
 export const typeDefs = gql`
   type Room {
 	  id: ID!
-	  status: String!
 	  invitationCode: String!
 	  playerCount: Int!
   }

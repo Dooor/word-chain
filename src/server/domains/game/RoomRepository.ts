@@ -1,4 +1,4 @@
-import { RoomEntity } from "./RoomEntity";
+import { RoomEntity } from "./Room";
 
 export interface GetRoomOptions {
 	id?: string;

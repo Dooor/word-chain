@@ -1,6 +1,6 @@
 
 import mongodb, { FilterQuery } from 'mongodb';
-import { RoomEntity } from '@server/domains/game/RoomEntity';
+import { RoomEntity } from '@server/domains/game/Room';
 import { RoomRepository, GetRoomOptions } from '@server/domains/game/RoomRepository';
 import { MongoRoom } from './models/MongoRoom';
 
