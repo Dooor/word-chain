@@ -6,6 +6,8 @@ import { DI } from '@server/config/DIUtils';
 
 // Domains
 import { RoomEntity, Room } from '@server/domains/game/Room';
+import { InvitationCode } from '@server/domains/game/InvitationCode';
+import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 // Presenters
 import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
@@ -36,7 +38,13 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	getRoom = async (id?: string, invitationCode?: string): Promise<RoomResponse | null> => {
 		const roomRepository = await DI.resolve(Dependencies.RoomRepository);
 
-		const room = await roomRepository.getRoom({ id, invitationCode });
+		const paramId = id ? UniqueEntityID.create({ value: id }) : undefined;
+		const paramInvitationCode = invitationCode ? InvitationCode.create({ value: invitationCode }) : undefined;
+
+		const room = await roomRepository.getRoom({
+			id: paramId,
+			invitationCode: paramInvitationCode,
+		});
 
 		if (!room) {
 			return null;

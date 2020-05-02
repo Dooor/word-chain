@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server-core';
 
 import { AuthenticatorID } from '../../../../src/server/domains/auth/AuthenticatorID';
+import { UniqueEntityID } from '../../../../src/server/domains/core/UniqueEntityID';
 import { User, UserEntity } from '../../../../src/server/domains/user/User';
 import { UserRepositoryImpl } from '../../../../src/server/infrastractures/user/UserRepositoryImpl';
 
@@ -42,13 +43,13 @@ describe('UserRepositoryImpl', () => {
 
 	describe('getUserById', () => {
 		it('正常系', async () => {
-			const user = await userRepository.getUserById(user1.id.value);
+			const user = await userRepository.getUserById(user1.id);
 
 			expect(user1.isEqualTo(user)).toBeTruthy;
 		});
 
 		it('IDを指定して、結果が帰ってこない場合', async () => {
-			const user = await userRepository.getUserById('xxxxxxxx');
+			const user = await userRepository.getUserById(UniqueEntityID.create());
 
 			expect(user).toBeNull;
 		});
@@ -76,7 +77,7 @@ describe('UserRepositoryImpl', () => {
 
 			await userRepository.createUser(newAuthenticatorId, newUser);
 
-			const user = await userRepository.getUserById(newUser.id.value);
+			const user = await userRepository.getUserById(newUser.id);
 			expect(newUser.isEqualTo(user)).toBeTruthy;
 		});
 

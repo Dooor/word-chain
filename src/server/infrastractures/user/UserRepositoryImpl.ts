@@ -4,6 +4,7 @@ import { MongoUser } from './models/MongoUser';
 
 import { User, UserEntity } from '@server/domains/user/User';
 import { UserRepository } from '@server/domains/user/UserRepository';
+import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 import { AuthenticatorID } from '@server/domains/auth/AuthenticatorID';
 
 
@@ -24,9 +25,9 @@ export class UserRepositoryImpl implements UserRepository {
 	 * ユーザーIDを指定して、ユーザーを取得する
 	 * @return ユーザー。存在しない場合はnullを返す
      */
-	getUserById = async (id: string): Promise<User | null> => {
+	getUserById = async (id: UniqueEntityID): Promise<User | null> => {
 		const mongoUser = await this.userCollection.findOne({
-			'user.id': id,
+			'user.id': id.value,
 			deletedAt: null,
 		});
 
@@ -63,7 +64,7 @@ export class UserRepositoryImpl implements UserRepository {
 		if (await this.getUserByAuthenticatorId(authenticatorId)) {
             throw new Error(`Duplicated authenticator ID: ${ authenticatorId.value }`);
         }
-		if (await this.getUserById(user.id.value)) {
+		if (await this.getUserById(user.id)) {
             throw new Error(`Duplicated user ID: ${ user.id.value }`);
         }
 

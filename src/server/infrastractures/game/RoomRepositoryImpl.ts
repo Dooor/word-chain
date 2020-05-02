@@ -31,10 +31,10 @@ export class RoomRepositoryImpl implements RoomRepository {
 		}];
 
 		if (options.id) {
-			queries.push({ id: options.id });
+			queries.push({ id: options.id.value });
 		}
 		if (options.invitationCode) {
-			queries.push({ invitationCode: options.invitationCode });
+			queries.push({ invitationCode: options.invitationCode.value });
 		}
 
 		const mongoRoom = await this.roomCollection.findOne({
@@ -54,10 +54,10 @@ export class RoomRepositoryImpl implements RoomRepository {
 	createRoom = async (room: RoomEntity): Promise<void> => {
 		const mongoRoom = MongoRoom.fromRoom(room);
 
-		if (await this.getRoom({ id: mongoRoom.id })) {
+		if (await this.getRoom({ id: room.id })) {
             throw new Error(`Duplicated room ID: ${ mongoRoom.id }`);
         }
-		if (await this.getRoom({ invitationCode: mongoRoom.invitationCode })) {
+		if (await this.getRoom({ invitationCode: room.invitationCode })) {
             throw new Error(`Duplicated invitation code: ${ mongoRoom.invitationCode }`);
         }
 
