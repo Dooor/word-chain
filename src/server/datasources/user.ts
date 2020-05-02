@@ -6,7 +6,6 @@ import { DI } from '@server/config/DIUtils';
 
 // Domains
 import { UserEntity, User } from '@server/domains/user/User';
-import { UserName } from '@server/domains/user/UserName';
 
 // Presenters
 import { UserPresenter } from '@server/presenters/user/UserPresenter';
@@ -38,7 +37,7 @@ export class UserAPIImpl extends DataSource implements UserAPI {
 		const userRepository = await DI.resolve(Dependencies.UserRepository);
 
 		const user: UserEntity = User.create({
-			name: UserName.create({ value: 'Shiritori' }),
+			name: 'Shiritori',
 		});
 
 		await userRepository.createUser(this.context.session.authenticatorId, user);

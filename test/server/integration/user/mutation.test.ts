@@ -1,5 +1,3 @@
-import 'module-alias/register';
-
 import { createTestClient } from 'apollo-server-testing';
 import { gql } from 'apollo-server';
 import { constructTestServer, mockNoUserSessionData } from '../_utils';

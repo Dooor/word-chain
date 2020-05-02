@@ -12,7 +12,7 @@ export class PlayerCount extends ValueObject<PlayerCountProps> {
 	}
 
 	static create(props?: Partial<PlayerCountProps>): PlayerCount {
-		const value = props && props.value || DefaultPlayerCount;
+		const value = props && (props.value !== undefined) ? props.value : DefaultPlayerCount;
 
 		if (value <= 0) {
 			throw new Error(`Invalid arguments: PlayerCount must be greater than 0, but passed ${value}`);

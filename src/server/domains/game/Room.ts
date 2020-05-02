@@ -19,8 +19,12 @@ export class Room extends Entity<RoomProps> implements RoomEntity {
 		super(props, id);
 	}
 
-	static create(props: RoomProps, id?: UniqueEntityID): Room {
-		return new Room(props, id);
+	static create(props?: { invitationCode?: string; playerCount?: number; createdAt?: number }, id?: string): Room {
+		const invitationCode = InvitationCode.create({ value: props && props.invitationCode });
+		const playerCount = PlayerCount.create({ value: props && props.playerCount });
+		const createdAt = DateTime.create({ value: props && props.createdAt });
+
+		return new Room({ invitationCode, playerCount, createdAt }, UniqueEntityID.create({ value: id }));
 	}
 
 	get invitationCode(): InvitationCode {

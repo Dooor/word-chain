@@ -7,7 +7,6 @@ import { RoomAPIImpl, RoomAPI } from '../../../src/server/datasources/game';
 import { UserAPIImpl, UserAPI } from '../../../src/server/datasources/user';
 
 import { User } from '../../../src/server/domains/user/User';
-import { UserName } from '../../../src/server/domains/user/UserName';
 import { AuthenticatorID } from '../../../src/server/domains/auth/AuthenticatorID';
 import { Token } from '../../../src/server/domains/auth/Token';
 
@@ -40,7 +39,7 @@ export const constructTestServer = ({ context = defaultContext }): TestServer =>
 
 export const mockSessionData = (): SessionData => ({
 	user: User.create({
-		name: UserName.create({ value: 'Tester' })
+		name: 'Tester',
 	}),
 	token: Token.create({ value: 'xxx-token' }),
 	authenticatorId: AuthenticatorID.create({ value: 'xxx-authenticator-id' }),

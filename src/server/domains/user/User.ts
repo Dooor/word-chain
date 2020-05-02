@@ -15,8 +15,11 @@ export class User extends Entity<UserProps> implements UserEntity {
 		super(props, id);
 	}
 
-	static create(props: UserProps, id?: UniqueEntityID): User {
-		return new User(props, id);
+	static create(props: { name: string }, id?: string): User {
+		const name = UserName.create({ value: props.name });
+		const uniqueId = UniqueEntityID.create({ value: id });
+
+		return new User({ name }, uniqueId);
 	}
 
 	get name(): UserName {

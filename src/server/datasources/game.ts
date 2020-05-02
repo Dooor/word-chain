@@ -5,10 +5,7 @@ import { Dependencies } from '@server/config/Config';
 import { DI } from '@server/config/DIUtils';
 
 // Domains
-import { DateTime } from '@server/domains/core/DateTime';
 import { RoomEntity, Room } from '@server/domains/game/Room';
-import { InvitationCode } from '@server/domains/game/InvitationCode';
-import { PlayerCount } from '@server/domains/game/PlayerCount';
 
 // Presenters
 import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
@@ -52,11 +49,7 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	createRoom = async (): Promise<RoomResponse | null> => {
 		const roomRepository = await DI.resolve(Dependencies.RoomRepository);
 
-		const room: RoomEntity = Room.create({
-			invitationCode: InvitationCode.create(),
-			createdAt: DateTime.create(),
-			playerCount: PlayerCount.create(),
-		});
+		const room: RoomEntity = Room.create();
 
 		try {
 			await roomRepository.createRoom(room);
