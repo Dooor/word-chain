@@ -30,3 +30,7 @@ jobs:
       run: npm install
     - name: Run test
       run: npm test
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
