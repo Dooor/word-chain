@@ -3,3 +3,4 @@ ignore:
   - "test"
   - "types"
   - ".github"
+  - "src/server/config"
