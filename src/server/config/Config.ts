@@ -3,10 +3,11 @@ import mongodb, { MongoClient } from 'mongodb';
 import { DI } from './DIUtils';
 
 // Services
-import { AuthService } from '@server/services/AuthService/AuthService';
-import { MockAuthService } from '@server/services/AuthService/MockAuthService';
+import { AuthService, AuthServiceImpl } from '@server/services/auth/AuthService';
 
 // Repositories
+import { AuthRepository } from '@server/domains/auth/AuthRepository';
+import { MockAuthRepositoryImpl } from '@server/infrastractures/auth/MockAuthRepositoryImpl';
 import { RoomRepository } from '@server/domains/game/RoomRepository';
 import { RoomRepositoryImpl } from '@server/infrastractures/game/RoomRepositoryImpl';
 import { UserRepository } from '@server/domains/user/UserRepository';
@@ -21,6 +22,7 @@ const Config = {
 export const Dependencies = {
 	Config: DI.Dependency<typeof Config>(),
 	AuthService: DI.Dependency<AuthService>(),
+	AuthRepository: DI.Dependency<AuthRepository>(),
 	RoomRepository: DI.Dependency<RoomRepository>(),
 	UserRepository: DI.Dependency<UserRepository>(),
     MongoClient: DI.Dependency<mongodb.MongoClient>()
@@ -33,12 +35,19 @@ DI.register(Dependencies.Config, async () => Config);
  */
 
 DI.register(Dependencies.AuthService, async () => {
-    return new MockAuthService();
+	const authRepository = await DI.resolve(Dependencies.AuthRepository);
+	const userRepository = await DI.resolve(Dependencies.UserRepository);
+
+	return new AuthServiceImpl(authRepository, userRepository);
 });
 
 /**
  * Infrastructures
  */
+
+DI.register(Dependencies.AuthRepository, async () => {
+    return new MockAuthRepositoryImpl(); // FIXME: use FirebaseAuthRepositoryImpl
+});
 
 DI.register(Dependencies.RoomRepository, async () => {
     const config = await DI.resolve(Dependencies.Config);

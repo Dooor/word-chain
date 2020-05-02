@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server';
 
-import defaultContext, { SessionData } from '../../../src/server/graphql/context';
+import defaultContext from '../../../src/server/graphql/context';
 import resolvers from '../../../src/server/graphql/resolvers';
 import { typeDefs } from '../../../src/server/graphql/schema';
 import { RoomAPIImpl, RoomAPI } from '../../../src/server/datasources/game';
@@ -8,6 +8,7 @@ import { UserAPIImpl, UserAPI } from '../../../src/server/datasources/user';
 
 import { User } from '../../../src/server/domains/user/User';
 import { AuthenticatorID } from '../../../src/server/domains/auth/AuthenticatorID';
+import { SessionData } from '../../../src/server/domains/auth/SessionData';
 import { Token } from '../../../src/server/domains/auth/Token';
 
 interface TestServer {

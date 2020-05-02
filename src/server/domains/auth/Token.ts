@@ -14,6 +14,10 @@ export class Token extends ValueObject<TokenProps> {
 	}
 
 	get value(): string {
-		return this.props.value;
+		return this.props.value.replace('Bearer ', '');
+	}
+
+	get isBearer(): boolean {
+		return this.props.value.startsWith('Bearer ');
 	}
 }
