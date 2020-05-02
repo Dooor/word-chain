@@ -6,12 +6,18 @@ import { typeDefs } from '@server/graphql/schema';
 import resolvers from '@server/graphql/resolvers';
 import context from '@server/graphql/context';
 import { RoomAPIImpl } from '@server/datasources/game';
-import { UserAPIImpl } from './datasources/user';
+import { UserAPIImpl } from '@server/datasources/user';
+import { Logger } from '@server/utils/Logger';
 
 const server = new ApolloServer({
 	context,
 	typeDefs,
 	resolvers,
+	formatError: (error) => {
+		Logger.captureException(error);
+
+		return error;
+	},
 	dataSources: () => ({
 		roomAPI: new RoomAPIImpl(),
 		userAPI: new UserAPIImpl(),

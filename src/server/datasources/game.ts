@@ -14,6 +14,8 @@ import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
 import { Room as RoomResponse } from '@server/graphql/types';
 import { Context } from '@server/graphql/context';
 
+// Utils
+import { Logger } from '@server/utils/Logger';
 
 export interface RoomAPI {
 	getRoom: (id?: string, invitationCode?: string) => Promise<RoomResponse | null>;
@@ -54,7 +56,7 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 		try {
 			await roomRepository.createRoom(room);
 		} catch (error) {
-			console.error(error);
+			Logger.captureException(error);
 			return null;
 		}
 

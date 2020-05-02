@@ -1,4 +1,5 @@
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
+import { AuthenticationError } from 'apollo-server';
 
 // Config
 import { Dependencies } from '@server/config/Config';
@@ -31,7 +32,7 @@ export class UserAPIImpl extends DataSource implements UserAPI {
 	 */
 	createUser = async (): Promise<UserResponse | null> => {
 		if (!this.context.session.authenticatorId) {
-			throw new Error('Unauthorized');
+			throw new AuthenticationError('token is invalid');
 		}
 
 		const userRepository = await DI.resolve(Dependencies.UserRepository);
