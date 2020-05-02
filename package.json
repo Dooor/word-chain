@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/ts-node --transpile-only ./src/server/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "generate": "graphql-codegen"
   },
   "repository": {
@@ -40,6 +40,7 @@
     "@typescript-eslint/eslint-plugin-tslint": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "@typescript-eslint/typescript-estree": "^2.30.0",
+    "apollo-server-testing": "^2.12.0",
     "eslint": "^6.8.0",
     "jest": "^25.5.0",
     "node-fetch": "^2.6.0",
@@ -65,5 +66,10 @@
   },
   "_moduleAliases": {
     "@server": "src/server"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@server/(.*)": "<rootDir>/src/server/$1"
+    }
   }
 }

@@ -8,5 +8,8 @@ module.exports = {
 	"transform": {
 		"^.+\\.(ts|tsx)$": "ts-jest"
 	},
-	"collectCoverage": true
+	"collectCoverage": true,
+	"moduleNameMapper": {
+		"@server/(.*)": "<rootDir>/src/server/$1"
+	}
 };
