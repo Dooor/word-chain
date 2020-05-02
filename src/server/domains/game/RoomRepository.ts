@@ -1,4 +1,4 @@
-import { RoomEntity } from "./Room";
+import { RoomEntity, Room } from "./Room";
 
 export interface GetRoomOptions {
 	id?: string;
@@ -6,6 +6,6 @@ export interface GetRoomOptions {
 }
 
 export interface RoomRepository {
-	getRoom: (options: GetRoomOptions) => Promise<RoomEntity | null>;
+	getRoom: (options: GetRoomOptions) => Promise<Room | null>;
 	createRoom: (room: RoomEntity) => Promise<void>;
 }

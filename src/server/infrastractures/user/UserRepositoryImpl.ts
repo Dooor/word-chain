@@ -2,7 +2,7 @@
 import mongodb from 'mongodb';
 import { MongoUser } from './models/MongoUser';
 
-import { UserEntity } from '@server/domains/user/User';
+import { User, UserEntity } from '@server/domains/user/User';
 import { UserRepository } from '@server/domains/user/UserRepository';
 import { AuthenticatorID } from '@server/domains/auth/AuthenticatorID';
 
@@ -24,7 +24,7 @@ export class UserRepositoryImpl implements UserRepository {
 	 * ユーザーIDを指定して、ユーザーを取得する
 	 * @return ユーザー。存在しない場合はnullを返す
      */
-	getUserById = async (id: string): Promise<UserEntity | null> => {
+	getUserById = async (id: string): Promise<User | null> => {
 		const mongoUser = await this.userCollection.findOne({
 			'user.id': id,
 			deletedAt: null,
@@ -41,7 +41,7 @@ export class UserRepositoryImpl implements UserRepository {
 	 * 認証用IDを指定して、ユーザーを取得する
 	 * @return ユーザー。存在しない場合はnullを返す
      */
-	getUserByAuthenticatorId = async (authenticatorId: AuthenticatorID): Promise<UserEntity | null> => {
+	getUserByAuthenticatorId = async (authenticatorId: AuthenticatorID): Promise<User | null> => {
 		const mongoUser = await this.userCollection.findOne({
 			authenticatorId: authenticatorId.value,
 			deletedAt: null,

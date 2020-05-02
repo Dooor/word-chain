@@ -10,7 +10,7 @@ export interface MongoRoom {
 }
 
 export namespace MongoRoom {
-    export function toRoom(mongoRoom: MongoRoom): RoomEntity {
+    export function toRoom(mongoRoom: MongoRoom): Room {
         return Room.create({
 			invitationCode: mongoRoom.invitationCode,
 			playerCount: mongoRoom.playerCount,

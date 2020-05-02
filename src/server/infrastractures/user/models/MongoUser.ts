@@ -14,7 +14,7 @@ export interface MongoUser {
 }
 
 export namespace MongoUser {
-    export function toUser(mongoUser: MongoUser): UserEntity {
+    export function toUser(mongoUser: MongoUser): User {
         return User.create({
 			name: mongoUser.user.name,
 		}, mongoUser.user.id);

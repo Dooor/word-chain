@@ -1,6 +1,6 @@
 
 import mongodb, { FilterQuery } from 'mongodb';
-import { RoomEntity } from '@server/domains/game/Room';
+import { Room, RoomEntity } from '@server/domains/game/Room';
 import { RoomRepository, GetRoomOptions } from '@server/domains/game/RoomRepository';
 import { MongoRoom } from './models/MongoRoom';
 
@@ -21,7 +21,7 @@ export class RoomRepositoryImpl implements RoomRepository {
      * 部屋を取得する
 	 * @return 部屋。存在しない場合はnullを返す
      */
-	getRoom = async (options: GetRoomOptions): Promise<RoomEntity | null> => {
+	getRoom = async (options: GetRoomOptions): Promise<Room | null> => {
 		if (!options.id && !options.invitationCode) {
             throw new Error(`Invalid arguments: options must have id or invitationCode`);
 		}

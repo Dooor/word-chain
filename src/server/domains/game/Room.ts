@@ -1,4 +1,4 @@
-import { Entity } from '@server/domains/core/Entity';
+import { Entity, EntityInterface } from '@server/domains/core/Entity';
 import { DateTime } from '@server/domains/core/DateTime';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 import { InvitationCode } from '@server/domains/game/InvitationCode';
@@ -10,9 +10,7 @@ export interface RoomProps {
 	createdAt: DateTime;
 }
 
-export interface RoomEntity extends RoomProps{
-	id: UniqueEntityID;
-}
+export type RoomEntity = RoomProps & EntityInterface<RoomProps>
 
 export class Room extends Entity<RoomProps> implements RoomEntity {
 	private constructor(props: RoomProps, id?: UniqueEntityID) {
