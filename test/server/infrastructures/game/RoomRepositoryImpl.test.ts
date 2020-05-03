@@ -4,6 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server-core';
 import { Room, RoomEntity } from '../../../../src/server/domains/game/Room';
 import { InvitationCode } from '../../../../src/server/domains/game/InvitationCode';
 import { RoomRepositoryImpl } from '../../../../src/server/infrastractures/game/RoomRepositoryImpl';
+import { User } from '../../../../src/server/domains/user/User';
 
 import { UnixTimestamp } from '../../../../src/server/utils/UnixTimestamp';
 
@@ -77,6 +78,36 @@ describe('RoomRepositoryImpl', () => {
 			const room3: RoomEntity = Room.create({ invitationCode: room2.invitationCode.value, playerCount: 2, createdAt: UnixTimestamp.now() });
 
 			await expect(roomRepository.createRoom(room3)).rejects.toThrowError();
+		});
+	});
+
+	describe('addPlayer', () => {
+		it('正常系', async () => {
+			const user = User.create({ name: 'Test_Player' });
+
+			await roomRepository.addPlayer(room1, user);
+			const room = await roomRepository.getRoom({ id: room1.id });
+
+			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
+
+			expect(playersContainingUser(room1, user)).toBeFalsy;
+			expect(playersContainingUser(room, user)).toBeTruthy;
+		});
+
+		it('部屋が存在しないならエラー', async () => {
+			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const user = User.create({ name: 'Test_Player' });
+
+			await expect(roomRepository.addPlayer(room3, user)).rejects.toThrowError();
+		});
+
+		it('すでに存在するプレイヤーならエラー', async () => {
+			const user = User.create({ name: 'Test_Player' });
+			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, players: [user], createdAt: UnixTimestamp.now() });
+
+			await roomRepository.createRoom(room3);
+
+			await expect(roomRepository.addPlayer(room3, user)).rejects.toThrowError();
 		});
 	});
 });

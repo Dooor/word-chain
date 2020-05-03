@@ -1,10 +1,13 @@
 
 import { Room, RoomEntity } from '@server/domains/game/Room';
 
+import { MongoPlayer } from '@server/infrastractures/game/models/MongoPlayer';
+
 export interface MongoRoom {
     readonly id: string;
 	readonly invitationCode: string;
 	readonly playerCount: number;
+	readonly players: MongoPlayer[];
 	readonly createdAt: number;
 	readonly deletedAt: number | null;
 }
@@ -14,6 +17,7 @@ export namespace MongoRoom {
         return Room.create({
 			invitationCode: mongoRoom.invitationCode,
 			playerCount: mongoRoom.playerCount,
+			players: mongoRoom.players.map((player) => MongoPlayer.toPlayer(player)),
 			createdAt: mongoRoom.createdAt,
 		}, mongoRoom.id);
     }
@@ -23,6 +27,7 @@ export namespace MongoRoom {
 			id: room.id.value,
 			invitationCode: room.invitationCode.value,
 			playerCount: room.playerCount.value,
+			players: room.players.map((player) => MongoPlayer.fromPlayer(player)),
 			createdAt: room.createdAt.value,
 			deletedAt: null,
         };

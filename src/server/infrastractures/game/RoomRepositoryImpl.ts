@@ -1,8 +1,10 @@
 
 import mongodb, { FilterQuery } from 'mongodb';
 import { Room, RoomEntity } from '@server/domains/game/Room';
-import { RoomRepository, GetRoomOptions } from '@server/domains/game/RoomRepository';
+import { RoomRepository, GetRoomOptions, GetPlayerOptions } from '@server/domains/game/RoomRepository';
 import { MongoRoom } from './models/MongoRoom';
+import { MongoPlayer } from './models/MongoPlayer';
+import { UserEntity } from '@server/domains/user/User';
 
 export class RoomRepositoryImpl implements RoomRepository {
 	private readonly client: mongodb.MongoClient;
@@ -64,4 +66,38 @@ export class RoomRepositoryImpl implements RoomRepository {
         await this.roomCollection.insertOne(mongoRoom);
 	}
 
+	/**
+	 * プレイヤーを取得する
+	 * @return プレイヤー。見つからない場合はnullを返す。
+	 */
+	getPlayer = async ({ roomId, playerId }: GetPlayerOptions): Promise<UserEntity | null> => {
+		const room = await this.getRoom({ id: roomId });
+
+		if (!room) {
+            throw new Error(`Not found room by ID: ${ roomId.value }`);
+		}
+
+		const filteredPlayers = room.players.filter((player) => player.id.isEqualTo(playerId));
+		return filteredPlayers[0] || null;
+	}
+
+	/**
+	 * プレイヤーを追加する
+	 */
+	addPlayer = async (room: RoomEntity, player: UserEntity): Promise<void> => {
+		const mongoRoom = MongoRoom.fromRoom(room);
+		const mongoPlayer = MongoPlayer.fromPlayer(player);
+
+		if (await this.getPlayer({ roomId: room.id, playerId: player.id })) {
+            throw new Error(`Duplicated player ID: ${ mongoPlayer.id }`);
+        }
+
+		await this.roomCollection.update({
+			id: mongoRoom.id
+		}, {
+			$push: {
+				players: mongoPlayer,
+			}
+		});
+	}
 }
