@@ -6,6 +6,9 @@
   "scripts": {
     "start": "./node_modules/.bin/ts-node --transpile-only ./src/server/index.ts",
     "test": "jest",
+    "lint:check": "eslint -c ./.eslintrc.json '{src,test}/**/*.{ts,js}'",
+    "lint:fix": "npm run lint -- --fix",
+    "type:check": "tsc --noEmit",
     "generate": "graphql-codegen"
   },
   "repository": {
@@ -67,10 +70,5 @@
   },
   "_moduleAliases": {
     "@server": "src/server"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "@server/(.*)": "<rootDir>/src/server/$1"
-    }
   }
 }

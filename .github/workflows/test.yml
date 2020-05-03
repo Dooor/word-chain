@@ -28,6 +28,10 @@ jobs:
         node-version: '12.x'
     - name: Install Dependencies
       run: npm install
+    - name: Check lint
+      run: npm run lint:check
+    - name: Check type
+      run: npm run type:check
     - name: Run test
       run: npm test
     - name: Upload coverage
