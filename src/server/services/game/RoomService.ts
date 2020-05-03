@@ -9,6 +9,7 @@ import { SessionData } from '@server/domains/auth/SessionData';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 export interface RoomService {
+	createRoom: (sessionData: SessionData) => Promise<Room>;
 	joinPlayer: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<Room>;
 	exitPlayer: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<Room>;
 }
@@ -17,6 +18,21 @@ export class RoomServiceImpl implements RoomService {
 	constructor(
 		private readonly roomRepository: RoomRepository,
 	) {}
+
+	createRoom = async (sessionData: SessionData): Promise<Room> => {
+		if (!sessionData.authenticatorId) {
+			throw new AuthenticationError('token is invalid');
+		}
+		if (!sessionData.user) {
+			throw new AuthenticationError('You need to sign up before continuing');
+		}
+
+		const room = Room.create({ players: [sessionData.user] });
+
+		await this.roomRepository.createRoom(room);
+
+		return room;
+	}
 
 	joinPlayer = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<Room> => {
 		if (!sessionData.authenticatorId) {

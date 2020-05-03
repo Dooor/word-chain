@@ -1,12 +1,10 @@
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
-import { AuthenticationError } from 'apollo-server';
 
 // Config
 import { Dependencies } from '@server/config/Config';
 import { DI } from '@server/config/DIUtils';
 
 // Domains
-import { RoomEntity, Room } from '@server/domains/game/Room';
 import { InvitationCode } from '@server/domains/game/InvitationCode';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
@@ -16,9 +14,6 @@ import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
 // Graphql
 import { Room as RoomResponse } from '@server/graphql/types';
 import { Context } from '@server/graphql/context';
-
-// Utils
-import { Logger } from '@server/utils/Logger';
 
 export interface GetRoomParameters {
 	roomId?: UniqueEntityID;
@@ -69,23 +64,9 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋を作成する
 	 */
 	createRoom = async (): Promise<RoomResponse | null> => {
-		if (!this.context.session.authenticatorId) {
-			throw new AuthenticationError('token is invalid');
-		}
-		if (!this.context.session.user) {
-			throw new AuthenticationError('You need to sign up before continuing');
-		}
+		const roomService = await DI.resolve(Dependencies.RoomService);
 
-		const roomRepository = await DI.resolve(Dependencies.RoomRepository);
-
-		const room: RoomEntity = Room.create({ players: [this.context.session.user] });
-
-		try {
-			await roomRepository.createRoom(room);
-		} catch (error) {
-			Logger.captureException(error);
-			return null;
-		}
+		const room = await roomService.createRoom(this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
