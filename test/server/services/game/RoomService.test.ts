@@ -30,6 +30,7 @@ describe('RoomServiceImpl', () => {
 				createRoom: jest.fn().mockReturnThis(),
 				getPlayer: jest.fn().mockReturnValue(null),
 				addPlayer: jest.fn().mockReturnThis(),
+				removePlayer: jest.fn().mockReturnThis(),
 			};
 		});
 

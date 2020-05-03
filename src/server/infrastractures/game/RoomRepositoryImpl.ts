@@ -100,4 +100,26 @@ export class RoomRepositoryImpl implements RoomRepository {
 			}
 		});
 	}
+
+	/**
+	 * プレイヤーを削除する
+	 */
+	removePlayer = async (room: RoomEntity, player: UserEntity): Promise<void> => {
+		const mongoRoom = MongoRoom.fromRoom(room);
+		const mongoPlayer = MongoPlayer.fromPlayer(player);
+
+		if (!await this.getPlayer({ roomId: room.id, playerId: player.id })) {
+            throw new Error(`Not found player ID: ${ mongoPlayer.id }`);
+        }
+
+		await this.roomCollection.update({
+			id: mongoRoom.id
+		}, {
+			$pull: {
+				players: {
+					id: mongoPlayer.id,
+				},
+			}
+		});
+	}
 }

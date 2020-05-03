@@ -14,8 +14,10 @@ describe('RoomRepositoryImpl', () => {
 
 	let roomRepository: RoomRepositoryImpl;
 
+	const player1 = User.create({ name: 'Test_Player' });
+
 	const room1: RoomEntity = Room.create({ invitationCode: '123456', playerCount: 2, createdAt: UnixTimestamp.now() });
-	const room2: RoomEntity = Room.create({ invitationCode: '234567', playerCount: 2, createdAt: UnixTimestamp.now() });
+	const room2: RoomEntity = Room.create({ invitationCode: '234567', playerCount: 2, createdAt: UnixTimestamp.now(), players: [player1] });
 
 	beforeAll(async () => {
         mongod = new MongoMemoryServer();
@@ -108,6 +110,31 @@ describe('RoomRepositoryImpl', () => {
 			await roomRepository.createRoom(room3);
 
 			await expect(roomRepository.addPlayer(room3, user)).rejects.toThrowError();
+		});
+	});
+
+	describe('removePlayer', () => {
+		it('正常系', async () => {
+			await roomRepository.removePlayer(room2, player1);
+			const room = await roomRepository.getRoom({ id: room2.id });
+
+			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
+
+			expect(playersContainingUser(room, player1)).toBeFalsy;
+			expect(playersContainingUser(room2, player1)).toBeTruthy;
+		});
+
+		it('部屋が存在しないならエラー', async () => {
+			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const user = User.create({ name: 'Test_Player' });
+
+			await expect(roomRepository.removePlayer(room3, user)).rejects.toThrowError();
+		});
+
+		it('すでに存在しないプレイヤーならエラー', async () => {
+			const user = User.create({ name: 'Test_Player' });
+
+			await expect(roomRepository.removePlayer(room2, user)).rejects.toThrowError();
 		});
 	});
 });

@@ -18,4 +18,5 @@ export interface RoomRepository {
 	createRoom: (room: RoomEntity) => Promise<void>;
 	getPlayer: (options: GetPlayerOptions) => Promise<PlayerEntity | null>;
 	addPlayer: (room: RoomEntity, player: PlayerEntity) => Promise<void>;
+	removePlayer: (room: RoomEntity, player: PlayerEntity) => Promise<void>;
 }
