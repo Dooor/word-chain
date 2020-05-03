@@ -20,6 +20,7 @@ export const typeDefs = gql`
   type Mutation {
 	  createRoom: Room
 	  joinRoom(invitationCode: String!): Room
+	  exitRoom(roomId: String!): Room
 	  createUser: User
   }
 `;

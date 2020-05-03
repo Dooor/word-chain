@@ -1,7 +1,11 @@
 import { RoomAPI } from '@server/datasources/game';
 import { UserAPI } from '@server/datasources/user';
 
-import { QueryRoomArgs, MutationJoinRoomArgs } from '@server/graphql/types';
+import {
+	QueryRoomArgs,
+	MutationJoinRoomArgs,
+	MutationExitRoomArgs,
+} from '@server/graphql/types';
 
 interface DataSources {
 	roomAPI: RoomAPI;
@@ -20,6 +24,8 @@ export default {
 			dataSources.roomAPI.createRoom(),
 		joinRoom: async (_, { invitationCode }: MutationJoinRoomArgs, { dataSources }: { dataSources: DataSources }) =>
 			dataSources.roomAPI.joinRoom(toParameter(invitationCode)),
+		exitRoom: async (_, { roomId }: MutationExitRoomArgs, { dataSources }: { dataSources: DataSources }) =>
+			dataSources.roomAPI.exitRoom(toParameter(roomId)),
 		createUser: async (_, __, { dataSources }: { dataSources: DataSources }) =>
 			dataSources.userAPI.createUser(),
 	}
