@@ -38,7 +38,13 @@ export type QueryRoomArgs = {
 export type Mutation = {
   readonly __typename?: 'Mutation';
   readonly createRoom?: Maybe<Room>;
+  readonly joinRoom?: Maybe<Room>;
   readonly createUser?: Maybe<User>;
+};
+
+
+export type MutationJoinRoomArgs = {
+  invitationCode: Scalars['String'];
 };
 
 export enum CacheControlScope {

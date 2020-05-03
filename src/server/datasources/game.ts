@@ -22,6 +22,7 @@ import { Logger } from '@server/utils/Logger';
 
 export interface RoomAPI {
 	getRoom: (id?: string, invitationCode?: string) => Promise<RoomResponse | null>;
+	joinRoom: (invitationCode: string) => Promise<RoomResponse | null>;
 	createRoom: () => Promise<RoomResponse | null>;
 }
 
@@ -79,4 +80,14 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 		return RoomPresenter.toResponse(room);
 	}
 
+	/**
+	 * 部屋に参加する
+	 */
+	joinRoom = async (invitationCode: string): Promise<RoomResponse | null> => {
+		const roomService = await DI.resolve(Dependencies.RoomService);
+
+		const room = await roomService.joinPlayer(InvitationCode.create({ value: invitationCode }), this.context.session);
+
+		return RoomPresenter.toResponse(room);
+	}
 }

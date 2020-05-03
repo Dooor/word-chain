@@ -4,6 +4,7 @@ import { DI } from './DIUtils';
 
 // Services
 import { AuthService, AuthServiceImpl } from '@server/services/auth/AuthService';
+import { RoomService, RoomServiceImpl } from '@server/services/game/RoomService';
 
 // Repositories
 import { AuthRepository } from '@server/domains/auth/AuthRepository';
@@ -22,6 +23,7 @@ const Config = {
 export const Dependencies = {
 	Config: DI.Dependency<typeof Config>(),
 	AuthService: DI.Dependency<AuthService>(),
+	RoomService: DI.Dependency<RoomService>(),
 	AuthRepository: DI.Dependency<AuthRepository>(),
 	RoomRepository: DI.Dependency<RoomRepository>(),
 	UserRepository: DI.Dependency<UserRepository>(),
@@ -39,6 +41,12 @@ DI.register(Dependencies.AuthService, async () => {
 	const userRepository = await DI.resolve(Dependencies.UserRepository);
 
 	return new AuthServiceImpl(authRepository, userRepository);
+});
+
+DI.register(Dependencies.RoomService, async () => {
+	const roomRepository = await DI.resolve(Dependencies.RoomRepository);
+
+	return new RoomServiceImpl(roomRepository);
 });
 
 /**
