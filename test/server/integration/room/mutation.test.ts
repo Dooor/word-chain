@@ -10,6 +10,10 @@ const CREATE_ROOM = gql`
 			id
 			invitationCode
 			playerCount
+			players {
+				id
+				name
+			}
 		}
 	}
 `;
@@ -18,7 +22,7 @@ describe('Mutations', () => {
 	describe('create room', () => {
 		it('正常系', async () => {
 			const roomId = uuidv4();
-			const mockData = { id: roomId, invitationCode: '123456', playerCount: 2 };
+			const mockData = { id: roomId, invitationCode: '123456', playerCount: 2, players: [{ id: 'xxxx', name: 'Tester' }] };
 
 			const { server, roomAPI } = constructTestServer({
 				context: async () => ({ session: mockSessionData() })

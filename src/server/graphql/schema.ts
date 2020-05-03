@@ -5,6 +5,7 @@ export const typeDefs = gql`
 	  id: ID!
 	  invitationCode: String!
 	  playerCount: Int!
+	  players: [User]!
   }
 
   type User {

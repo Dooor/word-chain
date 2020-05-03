@@ -17,7 +17,7 @@ export namespace MongoRoom {
         return Room.create({
 			invitationCode: mongoRoom.invitationCode,
 			playerCount: mongoRoom.playerCount,
-			players: mongoRoom.players.map((player) => MongoPlayer.toPlayer(player)),
+			players: mongoRoom.players ? mongoRoom.players.map((player) => MongoPlayer.toPlayer(player)) : [],
 			createdAt: mongoRoom.createdAt,
 		}, mongoRoom.id);
     }

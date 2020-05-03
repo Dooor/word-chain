@@ -1,4 +1,5 @@
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
+import { AuthenticationError } from 'apollo-server';
 
 // Config
 import { Dependencies } from '@server/config/Config';
@@ -57,9 +58,16 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋を作成する
 	 */
 	createRoom = async (): Promise<RoomResponse | null> => {
+		if (!this.context.session.authenticatorId) {
+			throw new AuthenticationError('token is invalid');
+		}
+		if (!this.context.session.user) {
+			throw new AuthenticationError('You need to sign up before continuing');
+		}
+
 		const roomRepository = await DI.resolve(Dependencies.RoomRepository);
 
-		const room: RoomEntity = Room.create();
+		const room: RoomEntity = Room.create({ players: [this.context.session.user] });
 
 		try {
 			await roomRepository.createRoom(room);
@@ -70,4 +78,5 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 
 		return RoomPresenter.toResponse(room);
 	}
+
 }

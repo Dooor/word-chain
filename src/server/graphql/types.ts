@@ -15,6 +15,7 @@ export type Room = {
   readonly id: Scalars['ID'];
   readonly invitationCode: Scalars['String'];
   readonly playerCount: Scalars['Int'];
+  readonly players: ReadonlyArray<Maybe<User>>;
 };
 
 export type User = {
@@ -37,6 +38,7 @@ export type QueryRoomArgs = {
 export type Mutation = {
   readonly __typename?: 'Mutation';
   readonly createRoom?: Maybe<Room>;
+  readonly createUser?: Maybe<User>;
 };
 
 export enum CacheControlScope {
