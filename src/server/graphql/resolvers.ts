@@ -1,6 +1,8 @@
 import { RoomAPI } from '@server/datasources/game';
 import { UserAPI } from '@server/datasources/user';
 
+import { RoomController } from '@server/presenters/game/RoomController';
+
 import {
 	QueryRoomArgs,
 	MutationJoinRoomArgs,
@@ -12,20 +14,18 @@ interface DataSources {
 	userAPI: UserAPI;
 }
 
-const toParameter = (arg: any): any | undefined => arg || undefined;
-
 export default {
 	Query: {
-		room: (_, { id, invitationCode }: QueryRoomArgs, { dataSources }: { dataSources: DataSources }) =>
-			dataSources.roomAPI.getRoom(toParameter(id), toParameter(invitationCode)),
+		room: (_, args: QueryRoomArgs, { dataSources }: { dataSources: DataSources }) =>
+			dataSources.roomAPI.getRoom(RoomController.toGetRoomParameter(args)),
 	},
 	Mutation: {
 		createRoom: async (_, __, { dataSources }: { dataSources: DataSources }) =>
 			dataSources.roomAPI.createRoom(),
-		joinRoom: async (_, { invitationCode }: MutationJoinRoomArgs, { dataSources }: { dataSources: DataSources }) =>
-			dataSources.roomAPI.joinRoom(toParameter(invitationCode)),
-		exitRoom: async (_, { roomId }: MutationExitRoomArgs, { dataSources }: { dataSources: DataSources }) =>
-			dataSources.roomAPI.exitRoom(toParameter(roomId)),
+		joinRoom: async (_, args: MutationJoinRoomArgs, { dataSources }: { dataSources: DataSources }) =>
+			dataSources.roomAPI.joinRoom(RoomController.toJoinRoomParameter(args)),
+		exitRoom: async (_, args: MutationExitRoomArgs, { dataSources }: { dataSources: DataSources }) =>
+			dataSources.roomAPI.exitRoom(RoomController.toExitRoomParameter(args)),
 		createUser: async (_, __, { dataSources }: { dataSources: DataSources }) =>
 			dataSources.userAPI.createUser(),
 	}

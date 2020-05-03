@@ -20,11 +20,24 @@ import { Context } from '@server/graphql/context';
 // Utils
 import { Logger } from '@server/utils/Logger';
 
+export interface GetRoomParameters {
+	roomId?: UniqueEntityID;
+	invitationCode?: InvitationCode;
+}
+
+export interface JoinRoomParameters {
+	invitationCode: InvitationCode;
+}
+
+export interface ExitRoomParameters {
+	roomId: UniqueEntityID;
+}
+
 export interface RoomAPI {
-	getRoom: (id?: string, invitationCode?: string) => Promise<RoomResponse | null>;
+	getRoom: (args: GetRoomParameters) => Promise<RoomResponse | null>;
 	createRoom: () => Promise<RoomResponse | null>;
-	joinRoom: (invitationCode: string) => Promise<RoomResponse>;
-	exitRoom: (roomId: string) => Promise<RoomResponse>;
+	joinRoom: (args: JoinRoomParameters) => Promise<RoomResponse>;
+	exitRoom: (args: ExitRoomParameters) => Promise<RoomResponse>;
 }
 
 export class RoomAPIImpl extends DataSource implements RoomAPI {
@@ -38,15 +51,11 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋ID/招待コードを指定して、部屋を取得する
 	 * @return 部屋。部屋が見つからない場合はnullを返す。
 	 */
-	getRoom = async (id?: string, invitationCode?: string): Promise<RoomResponse | null> => {
+	getRoom = async ({ roomId, invitationCode }: GetRoomParameters): Promise<RoomResponse | null> => {
 		const roomRepository = await DI.resolve(Dependencies.RoomRepository);
-
-		const paramId = id ? UniqueEntityID.create({ value: id }) : undefined;
-		const paramInvitationCode = invitationCode ? InvitationCode.create({ value: invitationCode }) : undefined;
-
 		const room = await roomRepository.getRoom({
-			id: paramId,
-			invitationCode: paramInvitationCode,
+			id: roomId,
+			invitationCode,
 		});
 
 		if (!room) {
@@ -84,10 +93,10 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	/**
 	 * 部屋に参加する
 	 */
-	joinRoom = async (invitationCode: string): Promise<RoomResponse> => {
+	joinRoom = async ({ invitationCode }: JoinRoomParameters): Promise<RoomResponse> => {
 		const roomService = await DI.resolve(Dependencies.RoomService);
 
-		const room = await roomService.joinPlayer(InvitationCode.create({ value: invitationCode }), this.context.session);
+		const room = await roomService.joinPlayer(invitationCode, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
@@ -96,10 +105,10 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	/**
 	 * 部屋から退出する
 	 */
-	exitRoom = async (roomId: string): Promise<RoomResponse> => {
+	exitRoom = async ({ roomId }: ExitRoomParameters): Promise<RoomResponse> => {
 		const roomService = await DI.resolve(Dependencies.RoomService);
 
-		const room = await roomService.exitPlayer(UniqueEntityID.create({ value: roomId }), this.context.session);
+		const room = await roomService.exitPlayer(roomId, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
