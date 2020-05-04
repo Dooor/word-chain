@@ -23,3 +23,7 @@ export abstract class ValueObject<T extends ValueObjectProps> {
 		return shallowEqual(this.props, vo.props);
 	}
 }
+
+export namespace ValueObject {
+	export class ArgumentError extends Error {}
+}

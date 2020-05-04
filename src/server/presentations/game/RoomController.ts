@@ -2,6 +2,7 @@
 import { UserInputError } from 'apollo-server';
 
 // Domains
+import { ValueObject } from '@server/domains/core/ValueObject';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 import { InvitationCode } from '@server/domains/game/InvitationCode';
 
@@ -27,7 +28,11 @@ export namespace RoomController {
 				invitationCode: args.invitationCode ? InvitationCode.create({ value: args.invitationCode }) : undefined,
 			};
 		} catch (error) {
-			throw new UserInputError(error.message, args);
+			if (error instanceof ValueObject.ArgumentError) {
+				throw new UserInputError(error.message, args);
+			}
+
+			throw error;
 		}
 	}
 
@@ -37,7 +42,11 @@ export namespace RoomController {
 				roomId: UniqueEntityID.create({ value: args.roomId }),
 			};
 		} catch (error) {
-			throw new UserInputError(error.message, args);
+			if (error instanceof ValueObject.ArgumentError) {
+				throw new UserInputError(error.message, args);
+			}
+
+			throw error;
 		}
 	}
 
@@ -47,7 +56,11 @@ export namespace RoomController {
 				invitationCode: InvitationCode.create({ value: args.invitationCode }),
 			};
 		} catch (error) {
-			throw new UserInputError(error.message, args);
+			if (error instanceof ValueObject.ArgumentError) {
+				throw new UserInputError(error.message, args);
+			}
+
+			throw error;
 		}
 	}
 }

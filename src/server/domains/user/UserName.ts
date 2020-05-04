@@ -11,7 +11,7 @@ export class UserName extends ValueObject<UserNameProps> {
 
 	static create(props: UserNameProps): UserName {
 		if (props.value.length <= 0) {
-			throw new Error(`Invalid arguments: UserName's length must be greater than 0, but passed ${props.value.length}`);
+			throw new ValueObject.ArgumentError(`Invalid arguments: UserName's length must be greater than 0, but passed ${props.value.length}`);
 		}
 
 		return new UserName(props);

@@ -16,10 +16,10 @@ export class InvitationCode extends ValueObject<InvitationCodeProps> {
 		const value = props && props.value || SecureRandom.number(InvitationCodeLength);
 
 		if (value.length !== InvitationCodeLength) {
-			throw new Error(`Invalid arguments: InvitationCode's length must be ${InvitationCodeLength}, but passed ${value.length}`);
+			throw new ValueObject.ArgumentError(`Invalid arguments: InvitationCode's length must be ${InvitationCodeLength}, but passed ${value.length}`);
 		}
 		if (!value.match(/^\d{6}$/)) {
-			throw new Error(`Invalid arguments: InvitationCode can contain only digit, but it is ${value}`);
+			throw new ValueObject.ArgumentError(`Invalid arguments: InvitationCode can contain only digit, but it is ${value}`);
 		}
 
 		return new InvitationCode({ value });

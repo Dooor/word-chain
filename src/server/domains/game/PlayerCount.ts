@@ -15,7 +15,7 @@ export class PlayerCount extends ValueObject<PlayerCountProps> {
 		const value = props && (props.value !== undefined) ? props.value : DefaultPlayerCount;
 
 		if (value <= 0) {
-			throw new Error(`Invalid arguments: PlayerCount must be greater than 0, but passed ${value}`);
+			throw new ValueObject.ArgumentError(`Invalid arguments: PlayerCount must be greater than 0, but passed ${value}`);
 		}
 
 		return new PlayerCount({ value });
