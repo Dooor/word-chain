@@ -16,7 +16,7 @@ export class UniqueEntityID extends ValueObject<UniqueEntityIDProps> {
 		const value = props && props.value || SecureRandom.uuid();
 
 		if (!validator.isUUID(value)) {
-			throw new Error(`Invalid arguments: props.value must be uuid, but passed ${value}`);
+			throw new Error(`Invalid arguments: UniqueEntityID must be uuid, but passed ${value}`);
 		}
 
 		return new UniqueEntityID({ value });

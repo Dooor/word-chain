@@ -1,3 +1,6 @@
+// Library
+import { UserInputError } from 'apollo-server';
+
 // Domains
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 import { InvitationCode } from '@server/domains/game/InvitationCode';
@@ -18,21 +21,33 @@ import {
 
 export namespace RoomController {
 	export function toGetRoomParameter(args: QueryRoomArgs): GetRoomParameters {
-		return {
-			roomId: args.id ? UniqueEntityID.create({ value: args.id }) : undefined,
-			invitationCode: args.invitationCode ? InvitationCode.create({ value: args.invitationCode }) : undefined,
-		};
+		try {
+			return {
+				roomId: args.id ? UniqueEntityID.create({ value: args.id }) : undefined,
+				invitationCode: args.invitationCode ? InvitationCode.create({ value: args.invitationCode }) : undefined,
+			};
+		} catch (error) {
+			throw new UserInputError(error.message, args);
+		}
 	}
 
 	export function toExitRoomParameter(args: MutationExitRoomArgs): ExitRoomParameters {
-		return {
-			roomId: UniqueEntityID.create({ value: args.roomId }),
-		};
+		try {
+			return {
+				roomId: UniqueEntityID.create({ value: args.roomId }),
+			};
+		} catch (error) {
+			throw new UserInputError(error.message, args);
+		}
 	}
 
 	export function toJoinRoomParameter(args: MutationJoinRoomArgs): JoinRoomParameters {
-		return {
-			invitationCode: InvitationCode.create({ value: args.invitationCode }),
-		};
+		try {
+			return {
+				invitationCode: InvitationCode.create({ value: args.invitationCode }),
+			};
+		} catch (error) {
+			throw new UserInputError(error.message, args);
+		}
 	}
 }
