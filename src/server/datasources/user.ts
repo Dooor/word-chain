@@ -9,7 +9,7 @@ import { DI } from '@server/config/DIUtils';
 import { UserEntity, User } from '@server/domains/user/User';
 
 // Presenters
-import { UserPresenter } from '@server/presenters/user/UserPresenter';
+import { UserPresenter } from '@server/presentations/user/UserPresenter';
 
 // Graphql
 import { User as UserResponse } from '@server/graphql/types';

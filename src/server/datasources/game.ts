@@ -9,7 +9,7 @@ import { InvitationCode } from '@server/domains/game/InvitationCode';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 // Presenters
-import { RoomPresenter } from '@server/presenters/game/RoomPresenter';
+import { RoomPresenter } from '@server/presentations/game/RoomPresenter';
 
 // Graphql
 import { Room as RoomResponse } from '@server/graphql/types';
