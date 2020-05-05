@@ -3,7 +3,7 @@ import { ApolloServer } from 'apollo-server';
 import defaultContext from '../../../src/server/graphql/context';
 import resolvers from '../../../src/server/graphql/resolvers';
 import { typeDefs } from '../../../src/server/graphql/schema';
-import { RoomAPIImpl, RoomAPI } from '../../../src/server/datasources/game';
+import { RoomAPIImpl, RoomAPI } from '../../../src/server/datasources/room';
 import { UserAPIImpl, UserAPI } from '../../../src/server/datasources/user';
 
 import { User } from '../../../src/server/domains/user/User';

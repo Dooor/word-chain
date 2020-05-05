@@ -1,8 +1,8 @@
-import { RoomServiceImpl } from '../../../../src/server/services/game/RoomService';
+import { RoomServiceImpl } from '../../../../src/server/services/room/RoomService';
 
-import { RoomRepository } from '../../../../src/server/domains/game/RoomRepository';
-import { Room, RoomEntity } from '../../../../src/server/domains/game/Room';
-import { InvitationCode } from '../../../../src/server/domains/game/InvitationCode';
+import { RoomRepository } from '../../../../src/server/domains/room/RoomRepository';
+import { Room, RoomEntity } from '../../../../src/server/domains/room/Room';
+import { InvitationCode } from '../../../../src/server/domains/room/InvitationCode';
 
 import { SecureRandom } from '../../../../src/server/utils/SecureRandom';
 import { User } from '../../../../src/server/domains/user/User';

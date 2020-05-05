@@ -4,13 +4,13 @@ import { DI } from './DIUtils';
 
 // Services
 import { AuthService, AuthServiceImpl } from '@server/services/auth/AuthService';
-import { RoomService, RoomServiceImpl } from '@server/services/game/RoomService';
+import { RoomService, RoomServiceImpl } from '@server/services/room/RoomService';
 
 // Repositories
 import { AuthRepository } from '@server/domains/auth/AuthRepository';
 import { MockAuthRepositoryImpl } from '@server/infrastractures/auth/MockAuthRepositoryImpl';
-import { RoomRepository } from '@server/domains/game/RoomRepository';
-import { RoomRepositoryImpl } from '@server/infrastractures/game/RoomRepositoryImpl';
+import { RoomRepository } from '@server/domains/room/RoomRepository';
+import { RoomRepositoryImpl } from '@server/infrastractures/room/RoomRepositoryImpl';
 import { UserRepository } from '@server/domains/user/UserRepository';
 import { UserRepositoryImpl } from '@server/infrastractures/user/UserRepositoryImpl';
 

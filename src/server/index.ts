@@ -5,7 +5,7 @@ import { ApolloServer } from 'apollo-server';
 import { typeDefs } from '@server/graphql/schema';
 import resolvers from '@server/graphql/resolvers';
 import context from '@server/graphql/context';
-import { RoomAPIImpl } from '@server/datasources/game';
+import { RoomAPIImpl } from '@server/datasources/room';
 import { UserAPIImpl } from '@server/datasources/user';
 import { Logger } from '@server/utils/Logger';
 

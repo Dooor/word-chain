@@ -2,7 +2,7 @@ import { RoomEntity, Room } from "./Room";
 import { UserEntity as PlayerEntity } from '@server/domains/user/User';
 
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { InvitationCode } from '@server/domains/game/InvitationCode';
+import { InvitationCode } from '@server/domains/room/InvitationCode';
 
 export interface GetRoomOptions {
 	id?: UniqueEntityID;

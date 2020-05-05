@@ -1,8 +1,8 @@
 import { Entity, EntityInterface } from '@server/domains/core/Entity';
 import { DateTime } from '@server/domains/core/DateTime';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { InvitationCode } from '@server/domains/game/InvitationCode';
-import { PlayerCount } from '@server/domains/game/PlayerCount';
+import { InvitationCode } from '@server/domains/room/InvitationCode';
+import { PlayerCount } from '@server/domains/room/PlayerCount';
 import { UserEntity } from '@server/domains/user/User';
 
 export interface RoomProps {

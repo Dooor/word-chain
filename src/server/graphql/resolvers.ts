@@ -1,7 +1,7 @@
-import { RoomAPI } from '@server/datasources/game';
+import { RoomAPI } from '@server/datasources/room';
 import { UserAPI } from '@server/datasources/user';
 
-import { RoomController } from '@server/presentations/game/RoomController';
+import { RoomController } from '@server/presentations/room/RoomController';
 
 import {
 	QueryRoomArgs,

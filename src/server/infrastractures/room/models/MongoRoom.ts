@@ -1,7 +1,7 @@
 
-import { Room, RoomEntity } from '@server/domains/game/Room';
+import { Room, RoomEntity } from '@server/domains/room/Room';
 
-import { MongoPlayer } from '@server/infrastractures/game/models/MongoPlayer';
+import { MongoPlayer } from '@server/infrastractures/room/models/MongoPlayer';
 
 export interface MongoRoom {
     readonly id: string;

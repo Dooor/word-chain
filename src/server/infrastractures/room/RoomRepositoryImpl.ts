@@ -1,7 +1,7 @@
 
 import mongodb, { FilterQuery } from 'mongodb';
-import { Room, RoomEntity } from '@server/domains/game/Room';
-import { RoomRepository, GetRoomOptions, GetPlayerOptions } from '@server/domains/game/RoomRepository';
+import { Room, RoomEntity } from '@server/domains/room/Room';
+import { RoomRepository, GetRoomOptions, GetPlayerOptions } from '@server/domains/room/RoomRepository';
 import { MongoRoom } from './models/MongoRoom';
 import { MongoPlayer } from './models/MongoPlayer';
 import { UserEntity } from '@server/domains/user/User';

@@ -5,11 +5,11 @@ import { Dependencies } from '@server/config/Config';
 import { DI } from '@server/config/DIUtils';
 
 // Domains
-import { InvitationCode } from '@server/domains/game/InvitationCode';
+import { InvitationCode } from '@server/domains/room/InvitationCode';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 // Presenters
-import { RoomPresenter } from '@server/presentations/game/RoomPresenter';
+import { RoomPresenter } from '@server/presentations/room/RoomPresenter';
 
 // Graphql
 import { Room as RoomResponse } from '@server/graphql/types';

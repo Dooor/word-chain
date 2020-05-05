@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server-core';
 
-import { Room, RoomEntity } from '../../../../src/server/domains/game/Room';
-import { InvitationCode } from '../../../../src/server/domains/game/InvitationCode';
-import { RoomRepositoryImpl } from '../../../../src/server/infrastractures/game/RoomRepositoryImpl';
+import { Room, RoomEntity } from '../../../../src/server/domains/room/Room';
+import { InvitationCode } from '../../../../src/server/domains/room/InvitationCode';
+import { RoomRepositoryImpl } from '../../../../src/server/infrastractures/room/RoomRepositoryImpl';
 import { User } from '../../../../src/server/domains/user/User';
 
 import { UnixTimestamp } from '../../../../src/server/utils/UnixTimestamp';

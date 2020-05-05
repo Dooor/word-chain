@@ -1,4 +1,4 @@
-import { Room } from '../../../../src/server/domains/game/Room';
+import { Room } from '../../../../src/server/domains/room/Room';
 
 describe('Room', () => {
 	describe('create', () => {

@@ -1,5 +1,5 @@
 // Domains
-import { RoomEntity } from '@server/domains/game/Room';
+import { RoomEntity } from '@server/domains/room/Room';
 
 // Types
 import {
