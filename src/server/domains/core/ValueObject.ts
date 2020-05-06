@@ -7,7 +7,7 @@ interface ValueObjectProps {
 export abstract class ValueObject<T extends ValueObjectProps> {
 	protected readonly props: T;
 
-	constructor(props: T) {
+	constructor(props: T, protected readonly name) {
 		this.props = Object.freeze(props);
 	}
 
@@ -17,6 +17,10 @@ export abstract class ValueObject<T extends ValueObjectProps> {
 		}
 
 		if (vo.props === undefined) {
+			return false;
+		}
+
+		if (this.name !== vo.name) {
 			return false;
 		}
 

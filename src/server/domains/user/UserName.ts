@@ -6,7 +6,7 @@ export interface UserNameProps {
 
 export class UserName extends ValueObject<UserNameProps> {
 	private constructor(props: UserNameProps) {
-		super(props);
+		super(props, 'UserName');
 	}
 
 	static create(props: UserNameProps): UserName {

@@ -9,7 +9,7 @@ const InvitationCodeLength = 6;
 
 export class InvitationCode extends ValueObject<InvitationCodeProps> {
 	private constructor(props: InvitationCodeProps) {
-		super(props);
+		super(props, 'InvitationCode');
 	}
 
 	static create(props?: Partial<InvitationCodeProps>): InvitationCode {

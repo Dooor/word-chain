@@ -8,7 +8,7 @@ const DefaultPlayerCount = 2;
 
 export class PlayerCount extends ValueObject<PlayerCountProps> {
 	private constructor(props: PlayerCountProps) {
-		super(props);
+		super(props, 'PlayerCount');
 	}
 
 	static create(props?: Partial<PlayerCountProps>): PlayerCount {

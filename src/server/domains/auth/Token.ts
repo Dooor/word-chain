@@ -6,7 +6,7 @@ export interface TokenProps {
 
 export class Token extends ValueObject<TokenProps> {
 	private constructor(props: TokenProps) {
-		super(props);
+		super(props, 'Token');
 	}
 
 	static create = (props: TokenProps): Token => {

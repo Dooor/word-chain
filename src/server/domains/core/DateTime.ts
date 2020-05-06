@@ -7,7 +7,7 @@ export interface DateTimeProps {
 
 export class DateTime extends ValueObject<DateTimeProps> {
 	private constructor(props: DateTimeProps) {
-		super(props);
+		super(props, 'DateTime');
 	}
 
 	static create = (props?: Partial<DateTimeProps>): DateTime => {

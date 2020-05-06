@@ -6,7 +6,7 @@ export interface AuthenticatorIDProps {
 
 export class AuthenticatorID extends ValueObject<AuthenticatorIDProps> {
 	private constructor(props: AuthenticatorIDProps) {
-		super(props);
+		super(props, 'AuthenticatorID');
 	}
 
 	static create = (props: AuthenticatorIDProps): AuthenticatorID => {

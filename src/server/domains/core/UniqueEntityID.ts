@@ -9,7 +9,7 @@ export interface UniqueEntityIDProps {
 
 export class UniqueEntityID extends ValueObject<UniqueEntityIDProps> {
 	private constructor(props: UniqueEntityIDProps) {
-		super(props);
+		super(props, 'UniqueEntityID');
 	}
 
 	static create = (props?: Partial<UniqueEntityIDProps>): UniqueEntityID => {
