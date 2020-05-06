@@ -8,7 +8,7 @@ export interface AuthService {
 	 * 与えられたBearerトークンで認証を行い、セッションデータを返す。
 	 * @return セッションデータ
 	 */
-	authenticate: (authorization: string) => Promise<SessionData>;
+	authenticate: (token: Token) => Promise<SessionData>;
 }
 
 export class AuthServiceImpl implements AuthService {
@@ -17,9 +17,7 @@ export class AuthServiceImpl implements AuthService {
 		private userRepository: UserRepository
 	) {}
 
-	authenticate = async (authorization: string): Promise<SessionData> => {
-		const token = Token.create({ value: authorization });
-
+	authenticate = async (token: Token): Promise<SessionData> => {
 		if (!token.isBearer) {
 			return {
 				token: null,

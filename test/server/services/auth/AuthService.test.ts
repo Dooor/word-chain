@@ -32,7 +32,7 @@ describe('AuthServiceImpl', () => {
 
 		it('正常系', async () => {
 			const authService = new AuthServiceImpl(authRepository, userRepository);
-			const result = await authService.authenticate(authorization);
+			const result = await authService.authenticate(token);
 
 			expect(result).toEqual({
 				authenticatorId,
@@ -43,7 +43,8 @@ describe('AuthServiceImpl', () => {
 
 		it('与えられた文字列がBearerトークンではない場合', async () => {
 			const authService = new AuthServiceImpl(authRepository, userRepository);
-			const result = await authService.authenticate(`Fake ${SecureRandom.uuid()}`);
+			const fakeToken = Token.create({ value: `Fake ${SecureRandom.uuid()}` });
+			const result = await authService.authenticate(fakeToken);
 
 			expect(result).toEqual({
 				authenticatorId: null,
@@ -56,7 +57,7 @@ describe('AuthServiceImpl', () => {
 			authRepository = Object.assign({}, authRepository, { authenticate: jest.fn().mockReturnValue(null) });
 
 			const authService = new AuthServiceImpl(authRepository, userRepository);
-			const result = await authService.authenticate(authorization);
+			const result = await authService.authenticate(token);
 
 			expect(result).toEqual({
 				authenticatorId: null,
@@ -69,7 +70,7 @@ describe('AuthServiceImpl', () => {
 			userRepository = Object.assign({}, userRepository, { getUserByAuthenticatorId: jest.fn().mockReturnValue(null) });
 
 			const authService = new AuthServiceImpl(authRepository, userRepository);
-			const result = await authService.authenticate(authorization);
+			const result = await authService.authenticate(token);
 
 			expect(result).toEqual({
 				authenticatorId,
