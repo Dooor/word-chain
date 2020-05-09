@@ -45,7 +45,7 @@ describe('UserRepositoryImpl', () => {
 		it('正常系', async () => {
 			const user = await userRepository.getUserById(user1.id);
 
-			expect(user1.isEqualTo(user)).toBeTruthy;
+			expect(user1.isEqualTo(user)).toBeTruthy();
 		});
 
 		it('IDを指定して、結果が帰ってこない場合', async () => {
@@ -59,7 +59,7 @@ describe('UserRepositoryImpl', () => {
 		it('正常系', async () => {
 			const user = await userRepository.getUserByAuthenticatorId(authenticatorId1);
 
-			expect(user1.isEqualTo(user)).toBeTruthy;
+			expect(user1.isEqualTo(user)).toBeTruthy();
 		});
 
 		it('IDを指定して、結果が帰ってこない場合', async () => {
@@ -78,7 +78,7 @@ describe('UserRepositoryImpl', () => {
 			await userRepository.createUser(newAuthenticatorId, newUser);
 
 			const user = await userRepository.getUserById(newUser.id);
-			expect(newUser.isEqualTo(user)).toBeTruthy;
+			expect(newUser.isEqualTo(user)).toBeTruthy();
 		});
 
 		it('すでに存在しているIDならエラー', async () => {

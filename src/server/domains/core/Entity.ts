@@ -35,6 +35,6 @@ export abstract class Entity<T> implements EntityInterface<T> {
 			return false;
 		}
 
-		return this.id === object.id;
+		return this.id.isEqualTo(object.id);
 	}
 }

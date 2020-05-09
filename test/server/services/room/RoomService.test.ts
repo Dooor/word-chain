@@ -66,7 +66,7 @@ describe('RoomServiceImpl', () => {
 			const roomService = new RoomServiceImpl(roomRepository);
 			const result = await roomService.joinPlayer(invitationCode, sessionData);
 
-			expect(expected.isEqualTo(result)).toBeTruthy;
+			expect(expected.isEqualTo(result)).toBeTruthy();
 		});
 
 		it('部屋が存在しない場合', async () => {

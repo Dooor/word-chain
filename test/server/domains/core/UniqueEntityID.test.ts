@@ -10,14 +10,14 @@ describe('UniqueEntityID', () => {
 			it('ID指定なし', async () => {
 				const entityId = UniqueEntityID.create();
 
-				expect(validator.isUUID(entityId.value)).toBeTruthy;
+				expect(validator.isUUID(entityId.value)).toBeTruthy();
 			});
 
 			it('ID指定あり', async () => {
 				const id = SecureRandom.uuid();
 				const entityId = UniqueEntityID.create({ value: id });
 
-				expect(validator.isUUID(entityId.value)).toBeTruthy;
+				expect(validator.isUUID(entityId.value)).toBeTruthy();
 				expect(entityId.value).toEqual(id);
 			});
 		});

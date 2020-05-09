@@ -44,13 +44,13 @@ describe('RoomRepositoryImpl', () => {
 		it('正常系', async () => {
 			const room = await roomRepository.getRoom({ id: room1.id });
 
-			expect(room1.isEqualTo(room)).toBeTruthy;
+			expect(room1.isEqualTo(room)).toBeTruthy();
 		});
 
 		it('招待コードを指定して、結果が帰ってくる場合', async () => {
 			const room = await roomRepository.getRoom({ invitationCode: room1.invitationCode });
 
-			expect(room1.isEqualTo(room)).toBeTruthy;
+			expect(room1.isEqualTo(room)).toBeTruthy();
 		});
 
 		it('招待コードを指定して、結果が帰ってこない場合', async () => {
@@ -67,7 +67,7 @@ describe('RoomRepositoryImpl', () => {
 			await roomRepository.createRoom(room3);
 			const room = await roomRepository.getRoom({ id: room3.id });
 
-			expect(room3.isEqualTo(room)).toBeTruthy;
+			expect(room3.isEqualTo(room)).toBeTruthy();
 		});
 
 		it('すでに存在するIDならエラー', async () => {
@@ -92,8 +92,8 @@ describe('RoomRepositoryImpl', () => {
 
 			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
 
-			expect(playersContainingUser(room1, user)).toBeFalsy;
-			expect(playersContainingUser(room, user)).toBeTruthy;
+			expect(playersContainingUser(room1, user)).toBeFalsy();
+			expect(playersContainingUser(room, user)).toBeTruthy();
 		});
 
 		it('部屋が存在しないならエラー', async () => {
@@ -120,8 +120,8 @@ describe('RoomRepositoryImpl', () => {
 
 			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
 
-			expect(playersContainingUser(room, player1)).toBeFalsy;
-			expect(playersContainingUser(room2, player1)).toBeTruthy;
+			expect(playersContainingUser(room, player1)).toBeFalsy();
+			expect(playersContainingUser(room2, player1)).toBeTruthy();
 		});
 
 		it('部屋が存在しないならエラー', async () => {
