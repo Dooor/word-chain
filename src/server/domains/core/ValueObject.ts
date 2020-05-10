@@ -11,7 +11,7 @@ export abstract class ValueObject<T extends ValueObjectProps> {
 		this.props = Object.freeze(props);
 	}
 
-	isEqualTo(vo?: ValueObject<T>): boolean {
+	isEqualTo(vo: ValueObject<T> | null | undefined): boolean {
 		if (vo === null || vo === undefined) {
 			return false;
 		}
