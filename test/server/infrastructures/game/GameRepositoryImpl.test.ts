@@ -23,8 +23,8 @@ describe('GameRepositoryImpl', () => {
 	const nowTimestamp = UnixTimestamp.now();
 	const question1 = Question.create({ body: 'a', turn: 1, createdAt: nowTimestamp, answerer: { turn: 1, user: { id: SecureRandom.uuid(), name: 'Answerer' } } });
 
-	const game1: GameEntity = Game.create({ players: [player], questions: [question1] });
-	const game2: GameEntity = Game.create({ players: [player], questions: [question1] });
+	const game1: GameEntity = Game.create({ room: { id: SecureRandom.uuid(), name: 'Test_Room' }, players: [player], questions: [question1] });
+	const game2: GameEntity = Game.create({ room: { id: SecureRandom.uuid(), name: 'Test_Room' }, players: [player], questions: [question1] });
 
 	beforeAll(async () => {
         mongod = new MongoMemoryServer();
@@ -63,7 +63,7 @@ describe('GameRepositoryImpl', () => {
 
 	describe('createGame', () => {
 		it('正常系', async () => {
-			const game3: GameEntity = Game.create({ players: [player] });
+			const game3: GameEntity = Game.create({ room: { id: SecureRandom.uuid(), name: 'Test_Room' }, players: [player] });
 
 			await gameRepository.createGame(game3);
 			const game = await gameRepository.getGame(game3.id);
@@ -72,7 +72,7 @@ describe('GameRepositoryImpl', () => {
 		});
 
 		it('すでに存在するIDならエラー', async () => {
-			const game3: GameEntity = Game.create({ players: [player] }, game2.id.value);
+			const game3: GameEntity = Game.create({ room: { id: SecureRandom.uuid(), name: 'Test_Room' }, players: [player] }, game2.id.value);
 
 			await expect(gameRepository.createGame(game3)).rejects.toThrowError();
 		});
