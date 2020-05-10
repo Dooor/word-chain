@@ -30,6 +30,9 @@ export class ParticipantServiceImpl implements ParticipantService {
 		if (!room) {
 			throw new ForbiddenError(`Not found room by invitation code: ${ invitationCode.value }`);
 		}
+		if (!room.isRemainingCapacity()) {
+			throw new ForbiddenError(`The rooom is fulled. Please contact owner to increase capacity.`);
+		}
 
 		await this.roomRepository.addParticipant(room, sessionData.user);
 

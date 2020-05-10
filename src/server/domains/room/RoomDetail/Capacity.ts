@@ -24,4 +24,8 @@ export class Capacity extends ValueObject<CapacityProps> {
 	get value(): number {
 		return this.props.value;
 	}
+
+	hasSpace = (participantCount: number): boolean => {
+		return this.value > participantCount;
+	}
 }

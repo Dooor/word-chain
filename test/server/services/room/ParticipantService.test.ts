@@ -38,6 +38,8 @@ describe('ParticipantServiceImpl', () => {
 
 		it('正常系', async () => {
 			const expected: RoomDetailEntity = RoomDetail.create({ room: { id: room.room.id.value, name: 'Test_Room' }, invitationCode: '123456', participants: [sessionData.user!] });
+
+			room.isRemainingCapacity = jest.fn().mockReturnValueOnce(true);
 			roomRepository.getRoom = jest.fn().mockReturnValue(room);
 
 			const roomService = new ParticipantServiceImpl(roomRepository);
@@ -63,6 +65,15 @@ describe('ParticipantServiceImpl', () => {
 		it('ユーザーの登録が完了していないならエラー', async () => {
 			const roomService = new ParticipantServiceImpl(roomRepository);
 			sessionData.user = null;
+
+			await expect(roomService.joinRoom(invitationCode, sessionData)).rejects.toThrowError();
+		});
+
+		it('部屋の許容人数を超えているならエラー', async () => {
+			room.isRemainingCapacity = jest.fn().mockReturnValueOnce(false);
+			roomRepository.getRoom = jest.fn().mockReturnValue(room);
+
+			const roomService = new ParticipantServiceImpl(roomRepository);
 
 			await expect(roomService.joinRoom(invitationCode, sessionData)).rejects.toThrowError();
 		});

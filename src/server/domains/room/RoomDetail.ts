@@ -25,6 +25,7 @@ export interface RoomDetailFactoryProps {
 
 export type RoomDetailEntity = RoomDetailProps & {
 	hasContainedUser: (user: User) =>  boolean;
+	isRemainingCapacity: () => boolean;
 	isEqualTo: (other: RoomDetailEntity | null | undefined) => boolean;
 }
 
@@ -63,6 +64,10 @@ export class RoomDetail implements RoomDetailEntity {
 
 	get participants(): UserEntity[] {
 		return this.props.participants;
+	}
+
+	isRemainingCapacity = (): boolean => {
+		return this.capacity.hasSpace(this.participants.length);
 	}
 
 	hasContainedUser = (user: User): boolean => {
