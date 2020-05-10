@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server-core';
 
 import { RoomDetail, RoomDetailEntity } from '../../../../src/server/domains/room/RoomDetail';
-import { InvitationCode } from '../../../../src/server/domains/room/InvitationCode';
+import { InvitationCode } from '../../../../src/server/domains/room/RoomDetail/InvitationCode';
 import { RoomRepositoryImpl } from '../../../../src/server/infrastractures/room/RoomRepositoryImpl';
 import { User } from '../../../../src/server/domains/user/User';
 

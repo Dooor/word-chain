@@ -2,7 +2,7 @@ import { RoomDetailEntity, RoomDetail } from "./RoomDetail";
 import { UserEntity as ParticipantEntity } from '@server/domains/user/User';
 
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { InvitationCode } from '@server/domains/room/InvitationCode';
+import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
 
 export interface GetRoomOptions {
 	id?: UniqueEntityID;

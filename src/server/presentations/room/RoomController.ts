@@ -4,7 +4,7 @@ import { UserInputError } from 'apollo-server';
 // Domains
 import { ValueObject } from '@server/domains/core/ValueObject';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { InvitationCode } from '@server/domains/room/InvitationCode';
+import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
 
 // Datasources
 import {

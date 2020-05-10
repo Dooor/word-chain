@@ -2,7 +2,7 @@ import { RoomServiceImpl } from '../../../../src/server/services/room/RoomServic
 
 import { RoomRepository } from '../../../../src/server/domains/room/RoomRepository';
 import { RoomDetail, RoomDetailEntity } from '../../../../src/server/domains/room/RoomDetail';
-import { InvitationCode } from '../../../../src/server/domains/room/InvitationCode';
+import { InvitationCode } from '../../../../src/server/domains/room/RoomDetail/InvitationCode';
 
 import { SecureRandom } from '../../../../src/server/utils/SecureRandom';
 import { User } from '../../../../src/server/domains/user/User';

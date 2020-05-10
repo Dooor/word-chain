@@ -1,7 +1,7 @@
 import { Room } from '@server/domains/room/Room';
 import { DateTime } from '@server/domains/core/DateTime';
-import { InvitationCode } from '@server/domains/room/InvitationCode';
-import { PlayerCount } from '@server/domains/room/PlayerCount';
+import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
+import { PlayerCount } from '@server/domains/room/RoomDetail/PlayerCount';
 import { UserEntity, User } from '@server/domains/user/User';
 
 export interface RoomDetailProps {

@@ -1,4 +1,4 @@
-import { PlayerCount } from '../../../../src/server/domains/room/PlayerCount';
+import { PlayerCount } from '../../../../src/server/domains/room/RoomDetail/PlayerCount';
 
 describe('PlayerCount', () => {
 	describe('create', () => {

@@ -3,7 +3,7 @@ import { AuthenticationError, ForbiddenError } from 'apollo-server';
 
 // Domains
 import { RoomDetail } from '@server/domains/room/RoomDetail';
-import { InvitationCode } from '@server/domains/room/InvitationCode';
+import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
 import { RoomRepository } from '@server/domains/room/RoomRepository';
 import { SessionData } from '@server/domains/auth/SessionData';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';

@@ -1,4 +1,4 @@
-import { InvitationCode } from '../../../../src/server/domains/room/InvitationCode';
+import { InvitationCode } from '../../../../src/server/domains/room/RoomDetail/InvitationCode';
 
 describe('InvitationCode', () => {
 	describe('create', () => {

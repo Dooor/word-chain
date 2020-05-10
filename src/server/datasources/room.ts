@@ -5,7 +5,7 @@ import { Dependencies } from '@server/config/Config';
 import { DI } from '@server/config/DIUtils';
 
 // Domains
-import { InvitationCode } from '@server/domains/room/InvitationCode';
+import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 // Presenters
