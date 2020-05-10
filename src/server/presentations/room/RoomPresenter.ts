@@ -1,5 +1,5 @@
 // Domains
-import { RoomEntity } from '@server/domains/room/Room';
+import { RoomDetailEntity } from '@server/domains/room/RoomDetail';
 
 // Types
 import {
@@ -7,12 +7,12 @@ import {
 } from '@server/graphql/types';
 
 export namespace RoomPresenter {
-	export function toResponse(room: RoomEntity): RoomResponse {
+	export function toResponse(roomDetail: RoomDetailEntity): RoomResponse {
 		return {
-			id: room.id.value,
-			invitationCode: room.invitationCode.value,
-			playerCount: room.playerCount.value,
-			players: room.participants.map((participant) => ({
+			id: roomDetail.room.id.value,
+			invitationCode: roomDetail.invitationCode.value,
+			playerCount: roomDetail.playerCount.value,
+			players: roomDetail.participants.map((participant) => ({
 				id: participant.id.value,
 				name: participant.name.value,
 			})),

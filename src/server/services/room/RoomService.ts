@@ -2,16 +2,16 @@
 import { AuthenticationError, ForbiddenError } from 'apollo-server';
 
 // Domains
-import { Room } from '@server/domains/room/Room';
+import { RoomDetail } from '@server/domains/room/RoomDetail';
 import { InvitationCode } from '@server/domains/room/InvitationCode';
 import { RoomRepository } from '@server/domains/room/RoomRepository';
 import { SessionData } from '@server/domains/auth/SessionData';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 export interface RoomService {
-	createRoom: (sessionData: SessionData) => Promise<Room>;
-	joinParticipant: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<Room>;
-	exitParticipant: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<Room>;
+	createRoom: (sessionData: SessionData) => Promise<RoomDetail>;
+	joinParticipant: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<RoomDetail>;
+	exitParticipant: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<RoomDetail>;
 }
 
 export class RoomServiceImpl implements RoomService {
@@ -19,7 +19,7 @@ export class RoomServiceImpl implements RoomService {
 		private readonly roomRepository: RoomRepository,
 	) {}
 
-	createRoom = async (sessionData: SessionData): Promise<Room> => {
+	createRoom = async (sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -27,14 +27,14 @@ export class RoomServiceImpl implements RoomService {
 			throw new AuthenticationError('You need to sign up before continuing');
 		}
 
-		const room = Room.create({ participants: [sessionData.user] });
+		const room = RoomDetail.create({ participants: [sessionData.user], room: { name: 'Test Room' } });
 
 		await this.roomRepository.createRoom(room);
 
 		return room;
 	}
 
-	joinParticipant = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<Room> => {
+	joinParticipant = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -54,7 +54,7 @@ export class RoomServiceImpl implements RoomService {
 		return room;
 	}
 
-	exitParticipant = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<Room> => {
+	exitParticipant = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -62,17 +62,21 @@ export class RoomServiceImpl implements RoomService {
 			throw new AuthenticationError('You need to sign up before continuing');
 		}
 
-		const room = await this.roomRepository.getRoom({ id: roomId });
-		if (!room) {
+		const roomDetail = await this.roomRepository.getRoom({ id: roomId });
+		if (!roomDetail) {
 			throw new ForbiddenError(`Not found room by id: ${ roomId.value }`);
 		}
 
-		await this.roomRepository.removeParticipant(room, sessionData.user);
+		await this.roomRepository.removeParticipant(roomDetail, sessionData.user);
 
-		return Room.create({
-			invitationCode: room.invitationCode.value,
-			playerCount: room.playerCount.value,
-			createdAt: room.createdAt.value,
-		}, room.id.value);
+		return RoomDetail.create({
+			room: {
+				id: roomDetail.room.id.value,
+				name: roomDetail.room.name.value,
+			},
+			invitationCode: roomDetail.invitationCode.value,
+			playerCount: roomDetail.playerCount.value,
+			createdAt: roomDetail.createdAt.value,
+		});
 	}
 }

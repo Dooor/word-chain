@@ -1,4 +1,4 @@
-import { RoomEntity, Room } from "./Room";
+import { RoomDetailEntity, RoomDetail } from "./RoomDetail";
 import { UserEntity as ParticipantEntity } from '@server/domains/user/User';
 
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
@@ -14,9 +14,9 @@ export interface GetParticipantOptions {
 }
 
 export interface RoomRepository {
-	getRoom: (options: GetRoomOptions) => Promise<Room | null>;
-	createRoom: (room: RoomEntity) => Promise<void>;
+	getRoom: (options: GetRoomOptions) => Promise<RoomDetail | null>;
+	createRoom: (room: RoomDetailEntity) => Promise<void>;
 	getParticipant: (options: GetParticipantOptions) => Promise<ParticipantEntity | null>;
-	addParticipant: (room: RoomEntity, participant: ParticipantEntity) => Promise<void>;
-	removeParticipant: (room: RoomEntity, participant: ParticipantEntity) => Promise<void>;
+	addParticipant: (room: RoomDetailEntity, participant: ParticipantEntity) => Promise<void>;
+	removeParticipant: (room: RoomDetailEntity, participant: ParticipantEntity) => Promise<void>;
 }

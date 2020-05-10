@@ -2,17 +2,17 @@
 import mongodb, { FilterQuery } from 'mongodb';
 
 // Mongo
-import { MongoRoom } from './models/MongoRoom';
+import { MongoRoomDetail } from './models/MongoRoomDetail';
 import { MongoParticipant } from './models/MongoParticipant';
 
 // Domains
-import { Room, RoomEntity } from '@server/domains/room/Room';
+import { RoomDetail, RoomDetailEntity } from '@server/domains/room/RoomDetail';
 import { RoomRepository, GetRoomOptions, GetParticipantOptions } from '@server/domains/room/RoomRepository';
 import { UserEntity } from '@server/domains/user/User';
 
 export class RoomRepositoryImpl implements RoomRepository {
 	private readonly client: mongodb.MongoClient;
-    private readonly roomCollection: mongodb.Collection<MongoRoom>;
+    private readonly roomCollection: mongodb.Collection<MongoRoomDetail>;
 
 	constructor(client: mongodb.MongoClient, dbName: string) {
 		this.client = client;
@@ -27,47 +27,47 @@ export class RoomRepositoryImpl implements RoomRepository {
      * 部屋を取得する
 	 * @return 部屋。存在しない場合はnullを返す
      */
-	getRoom = async (options: GetRoomOptions): Promise<Room | null> => {
+	getRoom = async (options: GetRoomOptions): Promise<RoomDetail | null> => {
 		if (!options.id && !options.invitationCode) {
             throw new Error(`Invalid arguments: options must have id or invitationCode`);
 		}
 
-		const queries: FilterQuery<MongoRoom>[] = [{
+		const queries: FilterQuery<MongoRoomDetail>[] = [{
 			deletedAt: null,
 		}];
 
 		if (options.id) {
-			queries.push({ id: options.id.value });
+			queries.push({ 'room.id': options.id.value });
 		}
 		if (options.invitationCode) {
 			queries.push({ invitationCode: options.invitationCode.value });
 		}
 
-		const mongoRoom = await this.roomCollection.findOne({
+		const mongoRoomDetail = await this.roomCollection.findOne({
 			$and: queries,
 		});
 
-		if (!mongoRoom) {
+		if (!mongoRoomDetail) {
 			return null;
 		}
 
-		return MongoRoom.toRoom(mongoRoom);
+		return MongoRoomDetail.toRoomDetail(mongoRoomDetail);
 	}
 
     /**
      * 部屋を作成する
      */
-	createRoom = async (room: RoomEntity): Promise<void> => {
-		const mongoRoom = MongoRoom.fromRoom(room);
+	createRoom = async (roomDetail: RoomDetailEntity): Promise<void> => {
+		const mongoRoomDetail = MongoRoomDetail.fromRoomDetail(roomDetail);
 
-		if (await this.getRoom({ id: room.id })) {
-            throw new Error(`Duplicated room ID: ${ mongoRoom.id }`);
+		if (await this.getRoom({ id: roomDetail.room.id })) {
+            throw new Error(`Duplicated room ID: ${ mongoRoomDetail.room.id }`);
         }
-		if (await this.getRoom({ invitationCode: room.invitationCode })) {
-            throw new Error(`Duplicated invitation code: ${ mongoRoom.invitationCode }`);
+		if (await this.getRoom({ invitationCode: roomDetail.invitationCode })) {
+            throw new Error(`Duplicated invitation code: ${ mongoRoomDetail.invitationCode }`);
         }
 
-        await this.roomCollection.insertOne(mongoRoom);
+        await this.roomCollection.insertOne(mongoRoomDetail);
 	}
 
 	/**
@@ -88,16 +88,16 @@ export class RoomRepositoryImpl implements RoomRepository {
 	/**
 	 * プレイヤーを追加する
 	 */
-	addParticipant = async (room: RoomEntity, player: UserEntity): Promise<void> => {
-		const mongoRoom = MongoRoom.fromRoom(room);
+	addParticipant = async (roomDetail: RoomDetailEntity, player: UserEntity): Promise<void> => {
+		const mongoRoomDetail = MongoRoomDetail.fromRoomDetail(roomDetail);
 		const mongoParticipant = MongoParticipant.fromParticipant(player);
 
-		if (await this.getParticipant({ roomId: room.id, playerId: player.id })) {
+		if (await this.getParticipant({ roomId: roomDetail.room.id, playerId: player.id })) {
             throw new Error(`Duplicated player ID: ${ mongoParticipant.id }`);
         }
 
 		await this.roomCollection.update({
-			id: mongoRoom.id
+			'room.id': mongoRoomDetail.room.id,
 		}, {
 			$push: {
 				participants: mongoParticipant,
@@ -108,16 +108,16 @@ export class RoomRepositoryImpl implements RoomRepository {
 	/**
 	 * プレイヤーを削除する
 	 */
-	removeParticipant = async (room: RoomEntity, player: UserEntity): Promise<void> => {
-		const mongoRoom = MongoRoom.fromRoom(room);
+	removeParticipant = async (roomDetail: RoomDetailEntity, player: UserEntity): Promise<void> => {
+		const mongoRoomDetail = MongoRoomDetail.fromRoomDetail(roomDetail);
 		const mongoParticipant = MongoParticipant.fromParticipant(player);
 
-		if (!await this.getParticipant({ roomId: room.id, playerId: player.id })) {
+		if (!await this.getParticipant({ roomId: roomDetail.room.id, playerId: player.id })) {
             throw new Error(`Not found player ID: ${ mongoParticipant.id }`);
         }
 
 		await this.roomCollection.update({
-			id: mongoRoom.id
+			'room.id': mongoRoomDetail.room.id
 		}, {
 			$pull: {
 				participants: {

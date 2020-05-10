@@ -1,16 +1,18 @@
-import { Room } from '../../../../src/server/domains/room/Room';
+import { RoomDetail } from '../../../../src/server/domains/room/RoomDetail';
 
-describe('Room', () => {
+describe('RoomDetail', () => {
 	describe('create', () => {
 		it('正常系', async () => {
+			const name = 'Test_Room';
 			const invitationCode = '123456';
 			const playerCount = 2;
 			const createdAt = 1588258800;
-			const room = Room.create({ invitationCode, playerCount, createdAt });
+			const roomDetail = RoomDetail.create({ room: { name }, invitationCode, playerCount, createdAt });
 
-			expect(room.invitationCode.value).toEqual(invitationCode);
-			expect(room.playerCount.value).toEqual(playerCount);
-			expect(room.createdAt.value).toEqual(createdAt);
+			expect(roomDetail.room.name.value).toEqual(name);
+			expect(roomDetail.invitationCode.value).toEqual(invitationCode);
+			expect(roomDetail.playerCount.value).toEqual(playerCount);
+			expect(roomDetail.createdAt.value).toEqual(createdAt);
 		});
 	});
 });
