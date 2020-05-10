@@ -58,6 +58,11 @@ describe('RoomRepositoryImpl', () => {
 
 			expect(room).toEqual(null);
 		});
+
+		it('部屋ID/招待コードを指定していない場合', async () => {
+			await expect(roomRepository.getRoom({})).rejects.toThrowError();
+		});
+
 	});
 
 	describe('createRoom', () => {
