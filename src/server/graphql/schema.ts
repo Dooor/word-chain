@@ -4,7 +4,7 @@ export const typeDefs = gql`
   type Room {
 	  id: ID!
 	  invitationCode: String!
-	  playerCount: Int!
+	  capacity: Int!
 	  players: [User]!
   }
 
@@ -18,7 +18,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-	  createRoom: Room
+	  createRoom(capacity: Int!, name: String!): Room
 	  joinRoom(invitationCode: String!): Room
 	  exitRoom(roomId: String!): Room
 	  createUser: User

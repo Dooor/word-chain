@@ -1,13 +1,13 @@
 import { Room } from '@server/domains/room/Room';
 import { DateTime } from '@server/domains/core/DateTime';
 import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
-import { PlayerCount } from '@server/domains/room/RoomDetail/PlayerCount';
+import { Capacity } from '@server/domains/room/RoomDetail/Capacity';
 import { UserEntity, User } from '@server/domains/user/User';
 
 export interface RoomDetailProps {
 	room: Room;
 	invitationCode: InvitationCode;
-	playerCount: PlayerCount;
+	capacity: Capacity;
 	participants: UserEntity[];
 	createdAt: DateTime;
 }
@@ -18,7 +18,7 @@ export interface RoomDetailFactoryProps {
 		name: string;
 	};
 	invitationCode?: string;
-	playerCount?: number;
+	capacity?: number;
 	participants?: UserEntity[];
 	createdAt?: number;
 }
@@ -31,18 +31,18 @@ export type RoomDetailEntity = RoomDetailProps & {
 export class RoomDetail implements RoomDetailEntity {
 	protected readonly props: RoomDetailProps;
 
-	private constructor(props: RoomDetailProps) {
+	constructor(props: RoomDetailProps) {
 		this.props = props;
 	}
 
 	static create(props: RoomDetailFactoryProps): RoomDetail {
 		const room = Room.create({ name: props.room.name }, props.room.id);
 		const invitationCode = InvitationCode.create({ value: props && props.invitationCode });
-		const playerCount = PlayerCount.create({ value: props && props.playerCount });
+		const capacity = Capacity.create({ value: props && props.capacity });
 		const createdAt = DateTime.create({ value: props && props.createdAt });
 		const participants = props && props.participants || [];
 
-		return new RoomDetail({ room, invitationCode, playerCount, participants, createdAt });
+		return new RoomDetail({ room, invitationCode, capacity, participants, createdAt });
 	}
 
 	get room(): Room {
@@ -53,8 +53,8 @@ export class RoomDetail implements RoomDetailEntity {
 		return this.props.invitationCode;
 	}
 
-	get playerCount(): PlayerCount {
-		return this.props.playerCount;
+	get capacity(): Capacity {
+		return this.props.capacity;
 	}
 
 	get createdAt(): DateTime {

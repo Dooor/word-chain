@@ -16,8 +16,8 @@ describe('RoomRepositoryImpl', () => {
 
 	const participant1 = User.create({ name: 'Test_Participant' });
 
-	const room1: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room_1' }, invitationCode: '123456', playerCount: 2, createdAt: UnixTimestamp.now() });
-	const room2: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room_2' }, invitationCode: '234567', playerCount: 2, createdAt: UnixTimestamp.now(), participants: [participant1] });
+	const room1: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room_1' }, invitationCode: '123456', capacity: 2, createdAt: UnixTimestamp.now() });
+	const room2: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room_2' }, invitationCode: '234567', capacity: 2, createdAt: UnixTimestamp.now(), participants: [participant1] });
 
 	beforeAll(async () => {
         mongod = new MongoMemoryServer();
@@ -62,7 +62,7 @@ describe('RoomRepositoryImpl', () => {
 
 	describe('createRoom', () => {
 		it('正常系', async () => {
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', capacity: 2, createdAt: UnixTimestamp.now() });
 
 			await roomRepository.createRoom(room3);
 			const room = await roomRepository.getRoom({ id: room3.room.id });
@@ -71,13 +71,13 @@ describe('RoomRepositoryImpl', () => {
 		});
 
 		it('すでに存在するIDならエラー', async () => {
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { id: room2.room.id.value, name: 'Test_Room' }, invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { id: room2.room.id.value, name: 'Test_Room' }, invitationCode: '345678', capacity: 2, createdAt: UnixTimestamp.now() });
 
 			await expect(roomRepository.createRoom(room3)).rejects.toThrowError();
 		});
 
 		it('すでに存在する招待コードならエラー', async () => {
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: room2.invitationCode.value, playerCount: 2, createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: room2.invitationCode.value, capacity: 2, createdAt: UnixTimestamp.now() });
 
 			await expect(roomRepository.createRoom(room3)).rejects.toThrowError();
 		});
@@ -95,7 +95,7 @@ describe('RoomRepositoryImpl', () => {
 		});
 
 		it('部屋が存在しないならエラー', async () => {
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', capacity: 2, createdAt: UnixTimestamp.now() });
 			const user = User.create({ name: 'Test_Participant' });
 
 			await expect(roomRepository.addParticipant(room3, user)).rejects.toThrowError();
@@ -103,7 +103,7 @@ describe('RoomRepositoryImpl', () => {
 
 		it('すでに存在するプレイヤーならエラー', async () => {
 			const user = User.create({ name: 'Test_Participant' });
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', playerCount: 2, participants: [user], createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', capacity: 2, participants: [user], createdAt: UnixTimestamp.now() });
 
 			await roomRepository.createRoom(room3);
 
@@ -121,7 +121,7 @@ describe('RoomRepositoryImpl', () => {
 		});
 
 		it('部屋が存在しないならエラー', async () => {
-			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
+			const room3: RoomDetailEntity = RoomDetail.create({ room: { name: 'Test_Room' }, invitationCode: '345678', capacity: 2, createdAt: UnixTimestamp.now() });
 			const user = User.create({ name: 'Test_Participant' });
 
 			await expect(roomRepository.removeParticipant(room3, user)).rejects.toThrowError();

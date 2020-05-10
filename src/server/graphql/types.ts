@@ -14,7 +14,7 @@ export type Room = {
   readonly __typename?: 'Room';
   readonly id: Scalars['ID'];
   readonly invitationCode: Scalars['String'];
-  readonly playerCount: Scalars['Int'];
+  readonly capacity: Scalars['Int'];
   readonly players: ReadonlyArray<Maybe<User>>;
 };
 
@@ -41,6 +41,12 @@ export type Mutation = {
   readonly joinRoom?: Maybe<Room>;
   readonly exitRoom?: Maybe<Room>;
   readonly createUser?: Maybe<User>;
+};
+
+
+export type MutationCreateRoomArgs = {
+  capacity: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 

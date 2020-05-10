@@ -5,6 +5,7 @@ import { RoomController } from '@server/presentations/room/RoomController';
 
 import {
 	QueryRoomArgs,
+	MutationCreateRoomArgs,
 	MutationJoinRoomArgs,
 	MutationExitRoomArgs,
 } from '@server/graphql/types';
@@ -20,8 +21,8 @@ export default {
 			dataSources.roomAPI.getRoom(RoomController.toGetRoomParameter(args)),
 	},
 	Mutation: {
-		createRoom: async (_, __, { dataSources }: { dataSources: DataSources }) =>
-			dataSources.roomAPI.createRoom(),
+		createRoom: async (_, args: MutationCreateRoomArgs, { dataSources }: { dataSources: DataSources }) =>
+			dataSources.roomAPI.createRoom(RoomController.toCreateRoomParameter(args)),
 		joinRoom: async (_, args: MutationJoinRoomArgs, { dataSources }: { dataSources: DataSources }) =>
 			dataSources.roomAPI.joinRoom(RoomController.toJoinRoomParameter(args)),
 		exitRoom: async (_, args: MutationExitRoomArgs, { dataSources }: { dataSources: DataSources }) =>

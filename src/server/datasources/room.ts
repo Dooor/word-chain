@@ -7,6 +7,8 @@ import { DI } from '@server/config/DIUtils';
 // Domains
 import { InvitationCode } from '@server/domains/room/RoomDetail/InvitationCode';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
+import { RoomName } from '@server/domains/room/Room/Name';
+import { Capacity } from '@server/domains/room/RoomDetail/Capacity';
 
 // Presenters
 import { RoomPresenter } from '@server/presentations/room/RoomPresenter';
@@ -20,6 +22,11 @@ export interface GetRoomParameters {
 	invitationCode?: InvitationCode;
 }
 
+export interface CreateRoomParameters {
+	name: RoomName;
+	capacity: Capacity;
+}
+
 export interface JoinRoomParameters {
 	invitationCode: InvitationCode;
 }
@@ -30,7 +37,7 @@ export interface ExitRoomParameters {
 
 export interface RoomAPI {
 	getRoom: (args: GetRoomParameters) => Promise<RoomResponse | null>;
-	createRoom: () => Promise<RoomResponse | null>;
+	createRoom: (args: CreateRoomParameters) => Promise<RoomResponse | null>;
 	joinRoom: (args: JoinRoomParameters) => Promise<RoomResponse>;
 	exitRoom: (args: ExitRoomParameters) => Promise<RoomResponse>;
 }
@@ -63,10 +70,10 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	/**
 	 * 部屋を作成する
 	 */
-	createRoom = async (): Promise<RoomResponse | null> => {
+	createRoom = async ({ name, capacity }: CreateRoomParameters): Promise<RoomResponse | null> => {
 		const ownerService = await DI.resolve(Dependencies.OwnerService);
 
-		const room = await ownerService.createRoom(this.context.session);
+		const room = await ownerService.createRoom(name, capacity, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}

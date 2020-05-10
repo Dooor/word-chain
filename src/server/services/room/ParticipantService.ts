@@ -59,7 +59,7 @@ export class ParticipantServiceImpl implements ParticipantService {
 				name: roomDetail.room.name.value,
 			},
 			invitationCode: roomDetail.invitationCode.value,
-			playerCount: roomDetail.playerCount.value,
+			capacity: roomDetail.capacity.value,
 			createdAt: roomDetail.createdAt.value,
 		});
 	}

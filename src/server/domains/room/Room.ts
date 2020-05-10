@@ -13,7 +13,7 @@ export interface RoomFactoryProps {
 export type RoomEntity = RoomProps & EntityInterface<RoomProps>
 
 export class Room extends Entity<RoomProps> implements RoomEntity {
-	private constructor(props: RoomProps, id?: UniqueEntityID) {
+	constructor(props: RoomProps, id?: UniqueEntityID) {
 		super(props, id);
 	}
 

@@ -5,9 +5,11 @@ import { AuthenticationError } from 'apollo-server';
 import { RoomDetail } from '@server/domains/room/RoomDetail';
 import { RoomRepository } from '@server/domains/room/RoomRepository';
 import { SessionData } from '@server/domains/auth/SessionData';
+import { RoomName } from '@server/domains/room/Room/Name';
+import { Capacity } from '@server/domains/room/RoomDetail/Capacity';
 
 export interface OwnerService {
-	createRoom: (sessionData: SessionData) => Promise<RoomDetail>;
+	createRoom: (name: RoomName, capacity: Capacity, sessionData: SessionData) => Promise<RoomDetail>;
 }
 
 export class OwnerServiceImpl implements OwnerService {
@@ -15,7 +17,7 @@ export class OwnerServiceImpl implements OwnerService {
 		private readonly roomRepository: RoomRepository,
 	) {}
 
-	createRoom = async (sessionData: SessionData): Promise<RoomDetail> => {
+	createRoom = async (name: RoomName, capacity: Capacity, sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -23,10 +25,10 @@ export class OwnerServiceImpl implements OwnerService {
 			throw new AuthenticationError('You need to sign up before continuing');
 		}
 
-		const room = RoomDetail.create({ participants: [sessionData.user], room: { name: 'Test Room' } });
+		const roomDetail = RoomDetail.create({ participants: [sessionData.user], capacity: capacity.value, room: { name: name.value } });
 
-		await this.roomRepository.createRoom(room);
+		await this.roomRepository.createRoom(roomDetail);
 
-		return room;
+		return roomDetail;
 	}
 }

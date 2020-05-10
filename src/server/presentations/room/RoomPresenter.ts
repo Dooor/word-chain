@@ -11,7 +11,7 @@ export namespace RoomPresenter {
 		return {
 			id: roomDetail.room.id.value,
 			invitationCode: roomDetail.invitationCode.value,
-			playerCount: roomDetail.playerCount.value,
+			capacity: roomDetail.capacity.value,
 			players: roomDetail.participants.map((participant) => ({
 				id: participant.id.value,
 				name: participant.name.value,

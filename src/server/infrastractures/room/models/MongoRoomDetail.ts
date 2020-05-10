@@ -9,7 +9,7 @@ export interface MongoRoomDetail {
 		name: string;
 	};
 	readonly invitationCode: string;
-	readonly playerCount: number;
+	readonly capacity: number;
 	readonly participants: MongoParticipant[];
 	readonly createdAt: number;
 	readonly deletedAt: number | null;
@@ -23,7 +23,7 @@ export namespace MongoRoomDetail {
 				name: mongoRoom.room.name,
 			},
 			invitationCode: mongoRoom.invitationCode,
-			playerCount: mongoRoom.playerCount,
+			capacity: mongoRoom.capacity,
 			participants: mongoRoom.participants ? mongoRoom.participants.map((participant) => MongoParticipant.toParticipant(participant)) : [],
 			createdAt: mongoRoom.createdAt,
 		});
@@ -36,7 +36,7 @@ export namespace MongoRoomDetail {
 				name: roomDetail.room.name.value,
 			},
 			invitationCode: roomDetail.invitationCode.value,
-			playerCount: roomDetail.playerCount.value,
+			capacity: roomDetail.capacity.value,
 			participants: roomDetail.participants.map((participant) => MongoParticipant.fromParticipant(participant)),
 			createdAt: roomDetail.createdAt.value,
 			deletedAt: null,
