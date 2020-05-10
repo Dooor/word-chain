@@ -8,6 +8,16 @@ export const typeDefs = gql`
 	  players: [User]!
   }
 
+  type Player {
+	  user: User!
+	  turn: Int!
+  }
+
+  type Game {
+	  id: ID!
+	  players: [Player]!
+  }
+
   type User {
 	  id: ID!
 	  name: String!
@@ -21,6 +31,7 @@ export const typeDefs = gql`
 	  createRoom(capacity: Int!, name: String!): Room
 	  joinRoom(invitationCode: String!): Room
 	  exitRoom(roomId: String!): Room
+	  createGame(roomId: String!): Game
 	  createUser: User
   }
 `;

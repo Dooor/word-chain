@@ -6,6 +6,7 @@ import { typeDefs } from '@server/graphql/schema';
 import resolvers from '@server/graphql/resolvers';
 import context from '@server/graphql/context';
 import { RoomAPIImpl } from '@server/datasources/room';
+import { GameAPIImpl } from '@server/datasources/game';
 import { UserAPIImpl } from '@server/datasources/user';
 import { Logger } from '@server/utils/Logger';
 
@@ -20,6 +21,7 @@ const server = new ApolloServer({
 	},
 	dataSources: () => ({
 		roomAPI: new RoomAPIImpl(),
+		gameAPI: new GameAPIImpl(),
 		userAPI: new UserAPIImpl(),
 	}),
 });

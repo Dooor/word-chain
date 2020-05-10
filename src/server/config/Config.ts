@@ -14,6 +14,8 @@ import { RoomRepository } from '@server/domains/room/RoomRepository';
 import { RoomRepositoryImpl } from '@server/infrastractures/room/RoomRepositoryImpl';
 import { UserRepository } from '@server/domains/user/UserRepository';
 import { UserRepositoryImpl } from '@server/infrastractures/user/UserRepositoryImpl';
+import { GameRepository } from '@server/domains/game/GameRepository';
+import { GameRepositoryImpl } from '@server/infrastractures/game/GameRepositoryImpl';
 
 const Config = {
     db: {
@@ -28,6 +30,7 @@ export const Dependencies = {
 	ParticipantService: DI.Dependency<ParticipantService>(),
 	AuthRepository: DI.Dependency<AuthRepository>(),
 	RoomRepository: DI.Dependency<RoomRepository>(),
+	GameRepository: DI.Dependency<GameRepository>(),
 	UserRepository: DI.Dependency<UserRepository>(),
     MongoClient: DI.Dependency<mongodb.MongoClient>()
 };
@@ -47,8 +50,9 @@ DI.register(Dependencies.AuthService, async () => {
 
 DI.register(Dependencies.OwnerService, async () => {
 	const roomRepository = await DI.resolve(Dependencies.RoomRepository);
+	const gameRepository = await DI.resolve(Dependencies.GameRepository);
 
-	return new OwnerServiceImpl(roomRepository);
+	return new OwnerServiceImpl(roomRepository, gameRepository);
 });
 
 DI.register(Dependencies.ParticipantService, async () => {
@@ -70,6 +74,16 @@ DI.register(Dependencies.RoomRepository, async () => {
 	const client = await DI.resolve(Dependencies.MongoClient);
 
     return new RoomRepositoryImpl(
+		client,
+		config.db.url.split('/').pop()!
+	);
+});
+
+DI.register(Dependencies.GameRepository, async () => {
+    const config = await DI.resolve(Dependencies.Config);
+	const client = await DI.resolve(Dependencies.MongoClient);
+
+    return new GameRepositoryImpl(
 		client,
 		config.db.url.split('/').pop()!
 	);

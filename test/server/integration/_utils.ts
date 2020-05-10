@@ -4,6 +4,7 @@ import defaultContext from '../../../src/server/graphql/context';
 import resolvers from '../../../src/server/graphql/resolvers';
 import { typeDefs } from '../../../src/server/graphql/schema';
 import { RoomAPIImpl, RoomAPI } from '../../../src/server/datasources/room';
+import { GameAPIImpl, GameAPI } from '../../../src/server/datasources/game';
 import { UserAPIImpl, UserAPI } from '../../../src/server/datasources/user';
 
 import { User } from '../../../src/server/domains/user/User';
@@ -15,11 +16,13 @@ interface TestServer {
 	server: ApolloServer;
 	roomAPI: RoomAPI;
 	userAPI: UserAPI;
+	gameAPI: GameAPI;
 }
 
 export const constructTestServer = ({ context = defaultContext }): TestServer => {
 	const roomAPI = new RoomAPIImpl();
 	const userAPI = new UserAPIImpl();
+	const gameAPI = new GameAPIImpl();
 
 	const server = new ApolloServer({
 		context,
@@ -28,6 +31,7 @@ export const constructTestServer = ({ context = defaultContext }): TestServer =>
 		dataSources: () => ({
 			roomAPI,
 			userAPI,
+			gameAPI,
 		}),
 	});
 
@@ -35,6 +39,7 @@ export const constructTestServer = ({ context = defaultContext }): TestServer =>
 		server,
 		roomAPI,
 		userAPI,
+		gameAPI,
 	};
 };
 
