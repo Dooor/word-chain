@@ -64,9 +64,9 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋を作成する
 	 */
 	createRoom = async (): Promise<RoomResponse | null> => {
-		const roomService = await DI.resolve(Dependencies.RoomService);
+		const ownerService = await DI.resolve(Dependencies.OwnerService);
 
-		const room = await roomService.createRoom(this.context.session);
+		const room = await ownerService.createRoom(this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
@@ -75,9 +75,9 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋に参加する
 	 */
 	joinRoom = async ({ invitationCode }: JoinRoomParameters): Promise<RoomResponse> => {
-		const roomService = await DI.resolve(Dependencies.RoomService);
+		const participantService = await DI.resolve(Dependencies.ParticipantService);
 
-		const room = await roomService.joinParticipant(invitationCode, this.context.session);
+		const room = await participantService.joinRoom(invitationCode, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
@@ -87,9 +87,9 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	 * 部屋から退出する
 	 */
 	exitRoom = async ({ roomId }: ExitRoomParameters): Promise<RoomResponse> => {
-		const roomService = await DI.resolve(Dependencies.RoomService);
+		const participantService = await DI.resolve(Dependencies.ParticipantService);
 
-		const room = await roomService.exitParticipant(roomId, this.context.session);
+		const room = await participantService.exitRoom(roomId, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}

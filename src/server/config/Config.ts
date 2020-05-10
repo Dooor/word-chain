@@ -4,7 +4,8 @@ import { DI } from './DIUtils';
 
 // Services
 import { AuthService, AuthServiceImpl } from '@server/services/auth/AuthService';
-import { RoomService, RoomServiceImpl } from '@server/services/room/RoomService';
+import { OwnerService, OwnerServiceImpl } from '@server/services/room/OwnerService';
+import { ParticipantService, ParticipantServiceImpl } from '@server/services/room/ParticipantService';
 
 // Repositories
 import { AuthRepository } from '@server/domains/auth/AuthRepository';
@@ -23,7 +24,8 @@ const Config = {
 export const Dependencies = {
 	Config: DI.Dependency<typeof Config>(),
 	AuthService: DI.Dependency<AuthService>(),
-	RoomService: DI.Dependency<RoomService>(),
+	OwnerService: DI.Dependency<OwnerService>(),
+	ParticipantService: DI.Dependency<ParticipantService>(),
 	AuthRepository: DI.Dependency<AuthRepository>(),
 	RoomRepository: DI.Dependency<RoomRepository>(),
 	UserRepository: DI.Dependency<UserRepository>(),
@@ -43,10 +45,16 @@ DI.register(Dependencies.AuthService, async () => {
 	return new AuthServiceImpl(authRepository, userRepository);
 });
 
-DI.register(Dependencies.RoomService, async () => {
+DI.register(Dependencies.OwnerService, async () => {
 	const roomRepository = await DI.resolve(Dependencies.RoomRepository);
 
-	return new RoomServiceImpl(roomRepository);
+	return new OwnerServiceImpl(roomRepository);
+});
+
+DI.register(Dependencies.ParticipantService, async () => {
+	const roomRepository = await DI.resolve(Dependencies.RoomRepository);
+
+	return new ParticipantServiceImpl(roomRepository);
 });
 
 /**

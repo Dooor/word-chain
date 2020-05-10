@@ -8,33 +8,17 @@ import { RoomRepository } from '@server/domains/room/RoomRepository';
 import { SessionData } from '@server/domains/auth/SessionData';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
-export interface RoomService {
-	createRoom: (sessionData: SessionData) => Promise<RoomDetail>;
-	joinParticipant: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<RoomDetail>;
-	exitParticipant: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<RoomDetail>;
+export interface ParticipantService {
+	joinRoom: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<RoomDetail>;
+	exitRoom: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<RoomDetail>;
 }
 
-export class RoomServiceImpl implements RoomService {
+export class ParticipantServiceImpl implements ParticipantService {
 	constructor(
 		private readonly roomRepository: RoomRepository,
 	) {}
 
-	createRoom = async (sessionData: SessionData): Promise<RoomDetail> => {
-		if (!sessionData.authenticatorId) {
-			throw new AuthenticationError('token is invalid');
-		}
-		if (!sessionData.user) {
-			throw new AuthenticationError('You need to sign up before continuing');
-		}
-
-		const room = RoomDetail.create({ participants: [sessionData.user], room: { name: 'Test Room' } });
-
-		await this.roomRepository.createRoom(room);
-
-		return room;
-	}
-
-	joinParticipant = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<RoomDetail> => {
+	joinRoom = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -54,7 +38,7 @@ export class RoomServiceImpl implements RoomService {
 		return room;
 	}
 
-	exitParticipant = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<RoomDetail> => {
+	exitRoom = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<RoomDetail> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
