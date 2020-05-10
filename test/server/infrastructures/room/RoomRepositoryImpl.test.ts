@@ -14,10 +14,10 @@ describe('RoomRepositoryImpl', () => {
 
 	let roomRepository: RoomRepositoryImpl;
 
-	const player1 = User.create({ name: 'Test_Player' });
+	const participant1 = User.create({ name: 'Test_Participant' });
 
 	const room1: RoomEntity = Room.create({ invitationCode: '123456', playerCount: 2, createdAt: UnixTimestamp.now() });
-	const room2: RoomEntity = Room.create({ invitationCode: '234567', playerCount: 2, createdAt: UnixTimestamp.now(), players: [player1] });
+	const room2: RoomEntity = Room.create({ invitationCode: '234567', playerCount: 2, createdAt: UnixTimestamp.now(), participants: [participant1] });
 
 	beforeAll(async () => {
         mongod = new MongoMemoryServer();
@@ -83,58 +83,55 @@ describe('RoomRepositoryImpl', () => {
 		});
 	});
 
-	describe('addPlayer', () => {
+	describe('addParticipant', () => {
 		it('正常系', async () => {
-			const user = User.create({ name: 'Test_Player' });
+			const user = User.create({ name: 'Test_Participant' });
 
-			await roomRepository.addPlayer(room1, user);
+			await roomRepository.addParticipant(room1, user);
 			const room = await roomRepository.getRoom({ id: room1.id });
 
-			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
-
-			expect(playersContainingUser(room1, user)).toBeFalsy();
-			expect(playersContainingUser(room, user)).toBeTruthy();
+			console.log(room);
+			expect(room1.hasContainedUser(user)).toBeFalsy();
+			expect(room!.hasContainedUser(user)).toBeTruthy();
 		});
 
 		it('部屋が存在しないならエラー', async () => {
 			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
-			const user = User.create({ name: 'Test_Player' });
+			const user = User.create({ name: 'Test_Participant' });
 
-			await expect(roomRepository.addPlayer(room3, user)).rejects.toThrowError();
+			await expect(roomRepository.addParticipant(room3, user)).rejects.toThrowError();
 		});
 
 		it('すでに存在するプレイヤーならエラー', async () => {
-			const user = User.create({ name: 'Test_Player' });
-			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, players: [user], createdAt: UnixTimestamp.now() });
+			const user = User.create({ name: 'Test_Participant' });
+			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, participants: [user], createdAt: UnixTimestamp.now() });
 
 			await roomRepository.createRoom(room3);
 
-			await expect(roomRepository.addPlayer(room3, user)).rejects.toThrowError();
+			await expect(roomRepository.addParticipant(room3, user)).rejects.toThrowError();
 		});
 	});
 
-	describe('removePlayer', () => {
+	describe('removeParticipant', () => {
 		it('正常系', async () => {
-			await roomRepository.removePlayer(room2, player1);
+			await roomRepository.removeParticipant(room2, participant1);
 			const room = await roomRepository.getRoom({ id: room2.id });
 
-			const playersContainingUser = (room: any, user: any): boolean => room ? room.players.some((player) => player.isEqualTo(user)) : false;
-
-			expect(playersContainingUser(room, player1)).toBeFalsy();
-			expect(playersContainingUser(room2, player1)).toBeTruthy();
+			expect(room2.hasContainedUser(participant1)).toBeTruthy();
+			expect(room!.hasContainedUser(participant1)).toBeFalsy();
 		});
 
 		it('部屋が存在しないならエラー', async () => {
 			const room3: RoomEntity = Room.create({ invitationCode: '345678', playerCount: 2, createdAt: UnixTimestamp.now() });
-			const user = User.create({ name: 'Test_Player' });
+			const user = User.create({ name: 'Test_Participant' });
 
-			await expect(roomRepository.removePlayer(room3, user)).rejects.toThrowError();
+			await expect(roomRepository.removeParticipant(room3, user)).rejects.toThrowError();
 		});
 
 		it('すでに存在しないプレイヤーならエラー', async () => {
-			const user = User.create({ name: 'Test_Player' });
+			const user = User.create({ name: 'Test_Participant' });
 
-			await expect(roomRepository.removePlayer(room2, user)).rejects.toThrowError();
+			await expect(roomRepository.removeParticipant(room2, user)).rejects.toThrowError();
 		});
 	});
 });

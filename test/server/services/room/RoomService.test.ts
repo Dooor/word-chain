@@ -26,9 +26,9 @@ describe('RoomServiceImpl', () => {
 		roomRepository = {
 			getRoom: jest.fn().mockReturnValue(null),
 			createRoom: jest.fn().mockReturnThis(),
-			getPlayer: jest.fn().mockReturnValue(null),
-			addPlayer: jest.fn().mockReturnThis(),
-			removePlayer: jest.fn().mockReturnThis(),
+			getParticipant: jest.fn().mockReturnValue(null),
+			addParticipant: jest.fn().mockReturnThis(),
+			removeParticipant: jest.fn().mockReturnThis(),
 		};
 	});
 
@@ -55,16 +55,16 @@ describe('RoomServiceImpl', () => {
 		});
 	});
 
-	describe('#joinPlayer', () => {
+	describe('#joinParticipant', () => {
 		const invitationCode = InvitationCode.create({ value: '123456' });
 		const room: RoomEntity = Room.create({ invitationCode: '123456' });
 
 		it('正常系', async () => {
-			const expected: RoomEntity = Room.create({ invitationCode: '123456', players: [sessionData.user!] }, room.id.value);
+			const expected: RoomEntity = Room.create({ invitationCode: '123456', participants: [sessionData.user!] }, room.id.value);
 			roomRepository.getRoom = jest.fn().mockReturnValue(room);
 
 			const roomService = new RoomServiceImpl(roomRepository);
-			const result = await roomService.joinPlayer(invitationCode, sessionData);
+			const result = await roomService.joinParticipant(invitationCode, sessionData);
 
 			expect(expected.isEqualTo(result)).toBeTruthy();
 		});
@@ -73,54 +73,54 @@ describe('RoomServiceImpl', () => {
 			roomRepository.getRoom = jest.fn().mockReturnValue(null);
 			const roomService = new RoomServiceImpl(roomRepository);
 
-			await expect(roomService.joinPlayer(invitationCode, sessionData)).rejects.toThrowError();
+			await expect(roomService.joinParticipant(invitationCode, sessionData)).rejects.toThrowError();
 		});
 
 		it('認証用IDの取得に失敗したならエラー', async () => {
 			const roomService = new RoomServiceImpl(roomRepository);
 			sessionData.authenticatorId = null;
 
-			await expect(roomService.joinPlayer(invitationCode, sessionData)).rejects.toThrowError();
+			await expect(roomService.joinParticipant(invitationCode, sessionData)).rejects.toThrowError();
 		});
 
 		it('ユーザーの登録が完了していないならエラー', async () => {
 			const roomService = new RoomServiceImpl(roomRepository);
 			sessionData.user = null;
 
-			await expect(roomService.joinPlayer(invitationCode, sessionData)).rejects.toThrowError();
+			await expect(roomService.joinParticipant(invitationCode, sessionData)).rejects.toThrowError();
 		});
 	});
 
-	describe('#exitPlayer', () => {
+	describe('#exitParticipant', () => {
 		const room: RoomEntity = Room.create({ invitationCode: '123456' });
 
 		it('正常系', async () => {
 			roomRepository.getRoom = jest.fn().mockReturnValue(room);
 			const roomService = new RoomServiceImpl(roomRepository);
-			await roomService.exitPlayer(room.id, sessionData);
+			await roomService.exitParticipant(room.id, sessionData);
 
-			expect(roomRepository.removePlayer).toHaveBeenCalled;
+			expect(roomRepository.removeParticipant).toHaveBeenCalled;
 		});
 
 		it('部屋が存在しない場合', async () => {
 			roomRepository.getRoom = jest.fn().mockReturnValue(null);
 			const roomService = new RoomServiceImpl(roomRepository);
 
-			await expect(roomService.exitPlayer(room.id, sessionData)).rejects.toThrowError();
+			await expect(roomService.exitParticipant(room.id, sessionData)).rejects.toThrowError();
 		});
 
 		it('認証用IDの取得に失敗したならエラー', async () => {
 			const roomService = new RoomServiceImpl(roomRepository);
 			sessionData.authenticatorId = null;
 
-			await expect(roomService.exitPlayer(room.id, sessionData)).rejects.toThrowError();
+			await expect(roomService.exitParticipant(room.id, sessionData)).rejects.toThrowError();
 		});
 
 		it('ユーザーの登録が完了していないならエラー', async () => {
 			const roomService = new RoomServiceImpl(roomRepository);
 			sessionData.user = null;
 
-			await expect(roomService.exitPlayer(room.id, sessionData)).rejects.toThrowError();
+			await expect(roomService.exitParticipant(room.id, sessionData)).rejects.toThrowError();
 		});
 	});
 });

@@ -25,4 +25,20 @@ describe('Turn', () => {
 			});
 		});
 	});
+
+	describe('isLater', () => {
+		it('自分の方が順番が前の場合', async () => {
+			const turn1 = Turn.create({ value: 1 });
+			const turn2 = Turn.create({ value: 2 });
+
+			expect(turn1.isLater(turn2)).toBeFalsy();
+		});
+
+		it('自分の方が順番が後の場合', async () => {
+			const turn1 = Turn.create({ value: 2 });
+			const turn2 = Turn.create({ value: 1 });
+
+			expect(turn1.isLater(turn2)).toBeTruthy();
+		});
+	});
 });

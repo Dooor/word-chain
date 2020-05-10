@@ -10,8 +10,8 @@ import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 
 export interface RoomService {
 	createRoom: (sessionData: SessionData) => Promise<Room>;
-	joinPlayer: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<Room>;
-	exitPlayer: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<Room>;
+	joinParticipant: (invitationCode: InvitationCode, sessionData: SessionData) => Promise<Room>;
+	exitParticipant: (roomId: UniqueEntityID, sessionData: SessionData) => Promise<Room>;
 }
 
 export class RoomServiceImpl implements RoomService {
@@ -27,14 +27,14 @@ export class RoomServiceImpl implements RoomService {
 			throw new AuthenticationError('You need to sign up before continuing');
 		}
 
-		const room = Room.create({ players: [sessionData.user] });
+		const room = Room.create({ participants: [sessionData.user] });
 
 		await this.roomRepository.createRoom(room);
 
 		return room;
 	}
 
-	joinPlayer = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<Room> => {
+	joinParticipant = async (invitationCode: InvitationCode, sessionData: SessionData): Promise<Room> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -47,14 +47,14 @@ export class RoomServiceImpl implements RoomService {
 			throw new ForbiddenError(`Not found room by invitation code: ${ invitationCode.value }`);
 		}
 
-		await this.roomRepository.addPlayer(room, sessionData.user);
+		await this.roomRepository.addParticipant(room, sessionData.user);
 
-		room.players.push(sessionData.user);
+		room.participants.push(sessionData.user);
 
 		return room;
 	}
 
-	exitPlayer = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<Room> => {
+	exitParticipant = async (roomId: UniqueEntityID, sessionData: SessionData): Promise<Room> => {
 		if (!sessionData.authenticatorId) {
 			throw new AuthenticationError('token is invalid');
 		}
@@ -67,7 +67,7 @@ export class RoomServiceImpl implements RoomService {
 			throw new ForbiddenError(`Not found room by id: ${ roomId.value }`);
 		}
 
-		await this.roomRepository.removePlayer(room, sessionData.user);
+		await this.roomRepository.removeParticipant(room, sessionData.user);
 
 		return Room.create({
 			invitationCode: room.invitationCode.value,

@@ -1,7 +1,7 @@
 import { Entity, EntityInterface } from '@server/domains/core/Entity';
 import { DateTime } from '@server/domains/core/DateTime';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { UserEntity, User } from '@server/domains/user/User';
+import { PlayerEntity, Player } from '@server/domains/game/Player';
 
 import { Body } from '@server/domains/game/Question/Body';
 import { Turn } from '@server/domains/game/Turn';
@@ -9,7 +9,7 @@ import { Turn } from '@server/domains/game/Turn';
 export interface QuestionProps {
 	turn: Turn;
 	body: Body;
-	answerer: UserEntity;
+	answerer: PlayerEntity;
 	createdAt: DateTime;
 }
 
@@ -17,13 +17,20 @@ export interface QuestionFactoryProps {
 	turn: number;
 	body: string;
 	answerer: {
-		id: string;
-		name: string;
+		turn: number;
+		user: {
+			id: string;
+			name: string;
+		};
 	};
 	createdAt: number;
 }
 
-export type QuestionEntity = QuestionProps & EntityInterface<QuestionProps>
+interface QuestionAttributes {
+	isLater: (other: QuestionEntity) =>  boolean;
+}
+
+export type QuestionEntity = QuestionProps & EntityInterface<QuestionProps> & QuestionAttributes
 
 export class Question extends Entity<QuestionProps> implements QuestionEntity {
 	constructor(props: QuestionProps, id?: UniqueEntityID) {
@@ -34,7 +41,7 @@ export class Question extends Entity<QuestionProps> implements QuestionEntity {
 		const entityId = UniqueEntityID.create({ value: id });
 		const turn = Turn.create({ value: props.turn });
 		const body = Body.create({ value: props.body });
-		const answerer = User.create({ name: props.answerer.name }, props.answerer.id);
+		const answerer = Player.create({ turn: props.answerer.turn, user: props.answerer.user });
 		const createdAt = DateTime.create({ value: props.createdAt });
 
 		return new Question({
@@ -53,11 +60,15 @@ export class Question extends Entity<QuestionProps> implements QuestionEntity {
 		return this.props.body;
 	}
 
-	get answerer(): UserEntity {
+	get answerer(): PlayerEntity {
 		return this.props.answerer;
 	}
 
 	get createdAt(): DateTime {
 		return this.props.createdAt;
+	}
+
+	isLater = (other: QuestionEntity): boolean => {
+		return this.turn.isLater(other.turn);
 	}
 }

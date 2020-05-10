@@ -10,7 +10,7 @@ export class Turn extends ValueObject<TurnProps> {
 	}
 
 	static create(props: TurnProps): Turn {
-		if (props.value < 0) {
+		if (props.value <= 0) {
 			throw new ValueObject.ArgumentError(`Invalid arguments: Turn must not be greater than 0, but passed ${props.value}`);
 		}
 
@@ -19,5 +19,9 @@ export class Turn extends ValueObject<TurnProps> {
 
 	get value(): number {
 		return this.props.value;
+	}
+
+	isLater = (other: Turn): boolean => {
+		return this.value > other.value;
 	}
 }

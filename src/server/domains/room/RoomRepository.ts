@@ -1,5 +1,5 @@
 import { RoomEntity, Room } from "./Room";
-import { UserEntity as PlayerEntity } from '@server/domains/user/User';
+import { UserEntity as ParticipantEntity } from '@server/domains/user/User';
 
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
 import { InvitationCode } from '@server/domains/room/InvitationCode';
@@ -8,7 +8,7 @@ export interface GetRoomOptions {
 	id?: UniqueEntityID;
 	invitationCode?: InvitationCode;
 }
-export interface GetPlayerOptions {
+export interface GetParticipantOptions {
 	roomId: UniqueEntityID;
 	playerId: UniqueEntityID;
 }
@@ -16,7 +16,7 @@ export interface GetPlayerOptions {
 export interface RoomRepository {
 	getRoom: (options: GetRoomOptions) => Promise<Room | null>;
 	createRoom: (room: RoomEntity) => Promise<void>;
-	getPlayer: (options: GetPlayerOptions) => Promise<PlayerEntity | null>;
-	addPlayer: (room: RoomEntity, player: PlayerEntity) => Promise<void>;
-	removePlayer: (room: RoomEntity, player: PlayerEntity) => Promise<void>;
+	getParticipant: (options: GetParticipantOptions) => Promise<ParticipantEntity | null>;
+	addParticipant: (room: RoomEntity, participant: ParticipantEntity) => Promise<void>;
+	removeParticipant: (room: RoomEntity, participant: ParticipantEntity) => Promise<void>;
 }

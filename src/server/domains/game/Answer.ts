@@ -1,15 +1,15 @@
 import { Entity, EntityInterface } from '@server/domains/core/Entity';
 import { DateTime } from '@server/domains/core/DateTime';
 import { UniqueEntityID } from '@server/domains/core/UniqueEntityID';
-import { UserEntity, User } from '@server/domains/user/User';
 
 import { Word } from '@server/domains/game/Answer/Word';
 import { Turn } from '@server/domains/game/Turn';
+import { PlayerEntity, Player } from '@server/domains/game/Player';
 
 export interface AnswerProps {
 	turn: Turn;
 	word: Word;
-	answerer: UserEntity;
+	answerer: PlayerEntity;
 	createdAt: DateTime;
 }
 
@@ -19,8 +19,11 @@ export interface AnswerFactoryProps {
 		value: string;
 	};
 	answerer: {
-		id: string;
-		name: string;
+		turn: number;
+		user: {
+			id: string;
+			name: string;
+		};
 	};
 	createdAt: number;
 }
@@ -36,7 +39,7 @@ export class Answer extends Entity<AnswerProps> implements AnswerEntity {
 		const entityId = UniqueEntityID.create({ value: id });
 		const turn = Turn.create({ value: props.turn });
 		const word = Word.create({ value: props.word.value });
-		const answerer = User.create({ name: props.answerer.name }, props.answerer.id);
+		const answerer = Player.create({ user: props.answerer.user, turn: props.answerer.turn });
 		const createdAt = DateTime.create({ value: props.createdAt });
 
 		return new Answer({
@@ -55,7 +58,7 @@ export class Answer extends Entity<AnswerProps> implements AnswerEntity {
 		return this.props.word;
 	}
 
-	get answerer(): UserEntity {
+	get answerer(): PlayerEntity {
 		return this.props.answerer;
 	}
 

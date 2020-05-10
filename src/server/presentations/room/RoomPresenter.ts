@@ -12,9 +12,9 @@ export namespace RoomPresenter {
 			id: room.id.value,
 			invitationCode: room.invitationCode.value,
 			playerCount: room.playerCount.value,
-			players: room.players.map((player) => ({
-				id: player.id.value,
-				name: player.name.value,
+			players: room.participants.map((participant) => ({
+				id: participant.id.value,
+				name: participant.name.value,
 			})),
 		};
 	}

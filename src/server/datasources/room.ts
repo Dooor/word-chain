@@ -77,7 +77,7 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	joinRoom = async ({ invitationCode }: JoinRoomParameters): Promise<RoomResponse> => {
 		const roomService = await DI.resolve(Dependencies.RoomService);
 
-		const room = await roomService.joinPlayer(invitationCode, this.context.session);
+		const room = await roomService.joinParticipant(invitationCode, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
@@ -89,7 +89,7 @@ export class RoomAPIImpl extends DataSource implements RoomAPI {
 	exitRoom = async ({ roomId }: ExitRoomParameters): Promise<RoomResponse> => {
 		const roomService = await DI.resolve(Dependencies.RoomService);
 
-		const room = await roomService.exitPlayer(roomId, this.context.session);
+		const room = await roomService.exitParticipant(roomId, this.context.session);
 
 		return RoomPresenter.toResponse(room);
 	}
