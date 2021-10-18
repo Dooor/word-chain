@@ -50,7 +50,7 @@
     "ts-jest": "25.5.1",
     "ts-node": "8.10.1",
     "tslint": "6.1.2",
-    "typescript": "3.9.2"
+    "typescript": "3.9.10"
   },
   "dependencies": {
     "@sentry/node": "^5.15.5",
