@@ -30,7 +30,7 @@
     "@graphql-codegen/typescript": "1.13.5",
     "@graphql-codegen/typescript-operations": "1.13.5",
     "@shelf/jest-mongodb": "1.1.5",
-    "@types/cors": "2.8.6",
+    "@types/cors": "2.8.12",
     "@types/express": "4.17.6",
     "@types/jest": "25.2.2",
     "@types/mongodb": "3.5.16",
