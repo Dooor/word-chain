@@ -34,7 +34,7 @@
     "@types/express": "4.17.6",
     "@types/jest": "25.2.2",
     "@types/mongodb": "3.5.16",
-    "@types/morgan": "1.9.0",
+    "@types/morgan": "1.9.9",
     "@types/node": "13.13.6",
     "@types/node-fetch": "2.5.7",
     "@types/uuid": "7.0.3",
